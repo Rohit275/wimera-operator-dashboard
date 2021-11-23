@@ -13,6 +13,8 @@ import { MachineFileImportComponent } from './machines/machine-file-import/machi
 import { HomeComponent } from './home/home.component';
 import { ChecklistComponent } from './admin/checklist/checklist.component';
 import { AddRoleComponent } from './admin/role/add-role/add-role.component';
+import { RoleListComponent } from './admin/role/role-list/role-list.component';
+import { LoginComponent } from './auth/login/login.component';
 
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatSidenavModule } from '@angular/material/sidenav';
@@ -34,6 +36,7 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatGridListModule } from '@angular/material/grid-list';
+import { MatCardModule } from '@angular/material/card';
 
 @NgModule({
   declarations: [
@@ -47,6 +50,8 @@ import { MatGridListModule } from '@angular/material/grid-list';
     HomeComponent,
     ChecklistComponent,
     AddRoleComponent,
+    RoleListComponent,
+    LoginComponent,
   ],
   imports: [
     BrowserModule,
@@ -74,6 +79,7 @@ import { MatGridListModule } from '@angular/material/grid-list';
     MatTabsModule,
     MatSnackBarModule,
     MatGridListModule,
+    MatCardModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

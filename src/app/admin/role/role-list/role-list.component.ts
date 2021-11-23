@@ -1,7 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { MatTableDataSource } from '@angular/material/table';
+
 import { AddRoleComponent } from '../add-role/add-role.component';
-import { MachineService } from '../../../machines/machine.service';
+import { AdminService } from '../../admin.service';
+import { Subscription } from 'rxjs';
 
 export interface PeriodicElement {
   name: string;
@@ -28,18 +32,26 @@ const ELEMENT_DATA: PeriodicElement[] = [
   templateUrl: './role-list.component.html',
   styleUrls: ['./role-list.component.css'],
 })
-export class RoleListComponent implements OnInit {
-  displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
-  dataSource = ELEMENT_DATA;
+export class RoleListComponent implements OnInit, OnDestroy {
+  users = [];
+  private usersSub: Subscription;
 
-  constructor(
-    private dialog: MatDialog,
-    private machineService: MachineService
-  ) {}
+  // displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
+  displayedColumns: string[] = ['role', 'user', 'cells'];
+
+  dataSource: MatTableDataSource<any>;
+
+  constructor(private dialog: MatDialog, private adminService: AdminService) {}
 
   ngOnInit(): void {
-    this.machineService.getRoles();
-    this.machineService.getRoleUpdateListener();
+    this.adminService.getUsers();
+    this.usersSub = this.adminService
+      .getUserUpdateListener()
+      .subscribe((users) => {
+        this.users = users;
+        this.dataSource = new MatTableDataSource<any>(users);
+        console.log('Users ngOnInit: ', this.users);
+      });
   }
 
   onAddRole() {
@@ -48,5 +60,9 @@ export class RoleListComponent implements OnInit {
     dialogConfig.autoFocus = true;
     dialogConfig.width = '30%';
     this.dialog.open(AddRoleComponent, dialogConfig);
+  }
+
+  ngOnDestroy() {
+    this.usersSub.unsubscribe();
   }
 }

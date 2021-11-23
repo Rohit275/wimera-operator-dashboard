@@ -168,8 +168,7 @@ router.put("/:id", (req, res, next) => {
     angSignal: req.body.angSignal,
     modbus: req.body.modbus,
   });
-  // console.log("Before update: ", req.body.signalType);
-  // console.log("Before update: ", req.body.analogSignal);
+
   console.log("Before update: ", req.body);
   Machine.updateOne({ _id: req.params.id }, machine).then((result) => {
     console.log("At update: ", req.body);

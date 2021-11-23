@@ -1,4 +1,4 @@
-<form class="machine-form" #f="ngForm" (submit)="oncreateRole(f)">
+<form class="role-form" #f="ngForm" (submit)="oncreateRole(f)">
   <h1 mat-dialog-title>Enter the values</h1>
 
   <ng-container>
@@ -14,6 +14,17 @@
       <mat-label>Password</mat-label>
       <input matInput name="Password" ngModel required />
     </mat-form-field>
+
+    <mat-label>Allocated cells</mat-label>
+    <p *ngFor="let cell of cells; let i = index">
+      <mat-checkbox (change)="onCheckEvent(cell, $event)">
+        {{ cell }}
+      </mat-checkbox>
+    </p>
+
+    <!-- <mat-form-field>
+      <mat-label>Allocated checksheets</mat-label>
+    </mat-form-field> -->
   </ng-container>
 
   <div class="button-row">
