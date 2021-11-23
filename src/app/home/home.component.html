@@ -1,0 +1,15 @@
+<mat-tab-group mat-align-tabs="start">
+  <ng-container *ngFor="let cell of cells; let i = index">
+    <mat-tab label="{{ cell }}">
+      <div class="wrapper">
+        <section class="left">
+          <app-checklist cellId="{{ i + 1 }}"></app-checklist>
+        </section>
+        <section class="right">
+          <!-- <h1>Table data</h1> -->
+          <app-machine-list></app-machine-list>
+        </section>
+      </div>
+    </mat-tab>
+  </ng-container>
+</mat-tab-group>
