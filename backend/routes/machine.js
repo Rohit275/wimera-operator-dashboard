@@ -73,7 +73,10 @@ router.get("/collections", (req, res) => {
     collectionvals = collections.map((collection) => {
       return collection.name;
     });
-    var colldata = collectionvals.filter((data) => !data.includes("_keyvals"));
+    var coll = collectionvals.filter((data) => !data.includes("_keyvals"));
+    var colls = coll.filter((data) => !data.includes("users"));
+    var colldata = colls.filter((data) => !data.includes("roles"));
+
     if (colldata) {
       console.log("Colldata", colldata);
       usercollection = colldata[0];

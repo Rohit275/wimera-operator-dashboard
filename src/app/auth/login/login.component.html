@@ -1,18 +1,38 @@
 <div class="main-wrapper">
   <mat-card>
     <mat-card-content>
-      <form>
+      <form #f="ngForm" (submit)="onLogin(f)">
         <h2>Log In</h2>
         <mat-form-field class="full-width-input">
-          <input matInput placeholder="Email" required />
-          <mat-error> Please provide a valid email address </mat-error>
+          <input
+            matInput
+            placeholder="Username"
+            name="UName"
+            ngModel
+            required
+          />
+          <mat-error> Please provide a valid UserName </mat-error>
         </mat-form-field>
         <mat-form-field class="full-width-input">
-          <input matInput type="text" placeholder="Role" required />
+          <input
+            matInput
+            type="text"
+            placeholder="Role"
+            name="Role"
+            ngModel
+            required
+          />
           <mat-error> Please provide a valid role </mat-error>
         </mat-form-field>
         <mat-form-field class="full-width-input">
-          <input matInput type="password" placeholder="Password" required />
+          <input
+            matInput
+            type="password"
+            placeholder="Password"
+            name="Password"
+            ngModel
+            required
+          />
           <mat-error> Please provide a valid password </mat-error>
         </mat-form-field>
 

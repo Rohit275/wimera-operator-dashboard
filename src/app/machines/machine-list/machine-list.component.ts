@@ -53,7 +53,9 @@ export class MachineListComponent implements OnInit {
       .getCollectionUpdateListener()
       .subscribe((collections: any[]) => {
         this.isLoading = false;
-        var colldata = collections.filter((data) => !data.includes('_keyvals'));
+        var coll = collections.filter((data) => !data.includes('_keyvals'));
+        var colls = coll.filter((data) => !data.includes('users'));
+        var colldata = colls.filter((data) => !data.includes('roles'));
         //console.log('Colldata', colldata);
         this.collections = colldata;
       });
