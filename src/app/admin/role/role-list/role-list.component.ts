@@ -6,26 +6,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { AddRoleComponent } from '../add-role/add-role.component';
 import { AdminService } from '../../admin.service';
 import { Subscription } from 'rxjs';
-
-export interface PeriodicElement {
-  name: string;
-  position: number;
-  weight: number;
-  symbol: string;
-}
-
-const ELEMENT_DATA: PeriodicElement[] = [
-  { position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H' },
-  { position: 2, name: 'Helium', weight: 4.0026, symbol: 'He' },
-  { position: 3, name: 'Lithium', weight: 6.941, symbol: 'Li' },
-  { position: 4, name: 'Beryllium', weight: 9.0122, symbol: 'Be' },
-  { position: 5, name: 'Boron', weight: 10.811, symbol: 'B' },
-  { position: 6, name: 'Carbon', weight: 12.0107, symbol: 'C' },
-  { position: 7, name: 'Nitrogen', weight: 14.0067, symbol: 'N' },
-  { position: 8, name: 'Oxygen', weight: 15.9994, symbol: 'O' },
-  { position: 9, name: 'Fluorine', weight: 18.9984, symbol: 'F' },
-  { position: 10, name: 'Neon', weight: 20.1797, symbol: 'Ne' },
-];
+import { EditRoleComponent } from '../edit-role/edit-role.component';
 
 @Component({
   selector: 'app-role-list',
@@ -34,10 +15,17 @@ const ELEMENT_DATA: PeriodicElement[] = [
 })
 export class RoleListComponent implements OnInit, OnDestroy {
   users = [];
+  userdata = [];
+
+  userFinal = [];
+  userId: string = '';
+  cells = [];
+  access = [];
+  id = [];
   private usersSub: Subscription;
 
   // displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
-  displayedColumns: string[] = ['role', 'user', 'cells'];
+  displayedColumns: string[] = ['role', 'user', 'cell', 'action'];
 
   dataSource: MatTableDataSource<any>;
 
@@ -48,9 +36,22 @@ export class RoleListComponent implements OnInit, OnDestroy {
     this.usersSub = this.adminService
       .getUserUpdateListener()
       .subscribe((users) => {
-        this.users = users;
-        this.dataSource = new MatTableDataSource<any>(users);
-        console.log('Users ngOnInit: ', this.users);
+        this.users = [];
+        this.access = [];
+        this.cells = [];
+        this.userdata = [...users];
+        //this.userFinal = users;
+        this.userdata.map((x) => {
+          if (x.RoleName != 'Admin') {
+            this.users.push(x);
+          }
+        });
+        console.log('Users', this.users);
+        this.users.map((x) => {
+          this.cells.push(x.cell);
+        });
+        console.log('Cells', this.cells);
+        this.dataSource = new MatTableDataSource<any>(this.users);
       });
   }
 
@@ -60,6 +61,23 @@ export class RoleListComponent implements OnInit, OnDestroy {
     dialogConfig.autoFocus = true;
     dialogConfig.width = '30%';
     this.dialog.open(AddRoleComponent, dialogConfig);
+  }
+
+  onEdit(value) {
+    const dialogConfig = new MatDialogConfig();
+    // console.log('Edit: ', value._id);
+    this.adminService.postUserId(value);
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = '30%';
+    this.dialog.open(EditRoleComponent, dialogConfig);
+  }
+
+  onDelete(value) {
+    this.adminService.deleteUser(value._id);
+    setTimeout(() => {
+      this.ngOnInit();
+    });
   }
 
   ngOnDestroy() {

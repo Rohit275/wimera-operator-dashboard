@@ -1,20 +1,6 @@
 <mat-spinner *ngIf="isLoading"></mat-spinner>
 <div class="example-container mat-elevation-z8">
   <div *ngIf="machines.length > 0 && !isLoading">
-    <!--Key values-->
-    <mat-table #table [dataSource]="KeyValSource">
-      <ng-container
-        *ngFor="let disCol of dynamicKeyValColumns; let colIndex = index"
-        matColumnDef="{{ disCol }}"
-      >
-        <mat-header-cell *matHeaderCellDef>{{ disCol }}</mat-header-cell>
-        <mat-cell *matCellDef="let element"> {{ element[disCol] }} </mat-cell>
-      </ng-container>
-      <!-- <mat-header-row
-        *matHeaderRowDef="dynamicKeyValColumns; sticky: true"
-      ></mat-header-row> -->
-      <mat-row *matRowDef="let row; columns: dynamicKeyValColumns"></mat-row>
-    </mat-table>
     <!-- Table Values-->
     <mat-table #table [dataSource]="dataSource">
       <ng-container
@@ -39,19 +25,6 @@
 </div>
 
 <div class="btn-row">
-  <button color="primary" mat-raised-button [matMenuTriggerFor]="belowMenu">
-    Collections
-  </button>
-  <mat-menu #belowMenu="matMenu" yPosition="below">
-    <ng-container *ngFor="let coll of collections; let colIndex = index">
-      <button (click)="onSelectCollection(coll)" mat-menu-item>
-        {{ coll }}
-      </button>
-    </ng-container>
-    <ng-container *ngIf="collections.length <= 0">
-      <button mat-menu-item disabled>-NO DATA-</button>
-    </ng-container>
-  </mat-menu>
   <button
     color="primary"
     mat-raised-button

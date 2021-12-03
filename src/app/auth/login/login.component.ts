@@ -1,36 +1,43 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
+import { AuthService } from '../auth.service';
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
 })
 export class LoginComponent implements OnInit {
-  constructor(private router: Router, private _snackbar: MatSnackBar) {}
+  constructor(
+    private router: Router,
+    private _snackbar: MatSnackBar,
+    private authService: AuthService
+  ) {}
   durationInSeconds = 3;
   ngOnInit(): void {}
+
   onLogin(form: NgForm) {
-    if (
-      form.value.UName == 'admin' &&
-      form.value.Role == 'admin' &&
-      form.value.Password == 'admin'
-    ) {
-      this._snackbar.open('Login Successful!', '', {
-        horizontalPosition: 'center',
-        verticalPosition: 'top',
-        duration: this.durationInSeconds * 1000,
-      });
-      console.log('Logging in', form.value);
-      this.router.navigate(['/home']);
-    } else {
-      this._snackbar.open('Login Failed!', '', {
-        horizontalPosition: 'center',
-        verticalPosition: 'top',
-        duration: this.durationInSeconds * 1000,
-      });
-      console.log('Wrong Username or password');
+    console.log('Login form: ', form.value);
+    var f = form.value;
+    console.log('Login f: ', f);
+    // if (f.userName == 'admin' && f.role == 'admin' && f.password == 'admin') {
+    //   this._snackbar.open('Login Successful!', '', {
+    //     horizontalPosition: 'center',
+    //     verticalPosition: 'top',
+    //     duration: this.durationInSeconds * 1000,
+    //   });
+    //   this.router.navigate(['/home']);
+    // } else {
+    //   this._snackbar.open('Enter the correct values!', '', {
+    //     horizontalPosition: 'center',
+    //     verticalPosition: 'top',
+    //     duration: this.durationInSeconds * 1000,
+    //   });
+    // }
+    if (form.valid) {
+      this.authService.login(f);
     }
   }
 }

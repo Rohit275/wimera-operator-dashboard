@@ -53,9 +53,8 @@ export class MachineListComponent implements OnInit {
       .getCollectionUpdateListener()
       .subscribe((collections: any[]) => {
         this.isLoading = false;
-        var coll = collections.filter((data) => !data.includes('_keyvals'));
-        var colls = coll.filter((data) => !data.includes('users'));
-        var colldata = colls.filter((data) => !data.includes('roles'));
+        var cols = collections.filter((data) => !data.includes('_keyvals'));
+        var colldata = cols.filter((data) => !data.includes('users'));
         //console.log('Colldata', colldata);
         this.collections = colldata;
       });
@@ -70,31 +69,29 @@ export class MachineListComponent implements OnInit {
         // console.log('Length of File :', this.dynamicList.length);
         if (length > 0) {
           this.dynamicDisplayedColumns = Object.keys(this.dynamicList[0]);
-          console.log(this.dynamicDisplayedColumns);
+          //  console.log(this.dynamicDisplayedColumns);
         }
         this.dataSource = new MatTableDataSource<any>(machines);
         this.dataSource.paginator = this.paginator;
         this.machineService.putDynamicColumns(this.dynamicDisplayedColumns);
       });
 
-    this.machineService.getMachineKeyVals();
+    // this.machineService.getMachineKeyVals();
 
-    this.machineKeyValSub = this.machineService
-      .getMachineKeyValUpdateListener()
-      .subscribe((machines: any[]) => {
-        this.isLoading = false;
-        this.KeyVals = machines;
-        this.dynamicKeyvals = machines;
-        var length = this.dynamicKeyvals.length;
+    //   this.machineKeyValSub = this.machineService
+    //     .getMachineKeyValUpdateListener()
+    //     .subscribe((machines: any[]) => {
+    //       this.isLoading = false;
+    //       this.KeyVals = machines;
+    //       this.dynamicKeyvals = machines;
+    //       var length = this.dynamicKeyvals.length;
 
-        if (length > 0) {
-          this.dynamicKeyValColumns = Object.keys(this.dynamicKeyvals[0]);
-          console.log('Dynamic KeyVal Columns', this.dynamicKeyValColumns);
-        }
-        this.KeyValSource = new MatTableDataSource<any>(machines);
-        // this.KeyValSource.paginator = this.paginator;
-        this.machineService.putDynamicKeyVal(this.dynamicKeyValColumns);
-      });
+    //       if (length > 0) {
+    //         this.dynamicKeyValColumns = Object.keys(this.dynamicKeyvals[0]);
+    //       }
+    //       this.KeyValSource = new MatTableDataSource<any>(machines);
+    //       this.machineService.putDynamicKeyVal(this.dynamicKeyValColumns);
+    //     });
   }
 
   showDialog() {

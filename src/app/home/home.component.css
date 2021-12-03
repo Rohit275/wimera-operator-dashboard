@@ -22,6 +22,12 @@ mat-grid-tile {
   border-color: white;
 }
 
+.mat-primary {
+  padding: 10px;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
 @media only screen and (max-width: 640px) {
   .wrapper {
     display: block;

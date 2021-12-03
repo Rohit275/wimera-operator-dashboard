@@ -1,9 +1,11 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const machineJs = require("../models/machine");
+//const machineJs = require("../models/Sheet");
 var app = require("../app");
 var FileName;
 var Machine;
+const Sheet = require("../models/Sheet");
+
 const machineSchema = new mongoose.Schema({}, { strict: false });
 var usercollection, keyValue;
 //Machine = mongoose.model("JH check sheet (1).csv", machineSchema);
@@ -19,11 +21,18 @@ mongoose.connection.on("open", (ref) => {
     var colldata = collectionvals.filter((data) => !data.includes("_keyvals"));
     if (colldata) {
       usercollection = colldata[0];
+      // var keyval = usercollection.slice(0, usercollection.length - 1);
+      // var keyvalvar = keyval + "_keyvals";
+      // keyValue = collectionvals.some((data) => data.includes(keyvalvar));
+      // console.log("keyval", keyvalvar);
+      // console.log("KeyValue", keyValue);
     } else {
       console.log("No collections");
     }
   });
 });
+
+//const collectionvals = app.passcollections();
 
 router.get("/", (req, res, next) => {
   if (usercollection == undefined) {
@@ -67,24 +76,48 @@ router.post("/usercollection", (req, res) => {
   }
 });
 
+router.post("/importCSV", (req, res, next) => {
+  console.log(req.body);
+  let data = new Sheet({
+    cell: req.body.cell,
+    OperationNo: req.body.opNo,
+    value: req.body.csv,
+  });
+  console.log(data);
+  data.save().then((addedValue) => {
+    console.log(addedValue);
+    res.status(201).json({
+      message: "Sheet added succesfully!",
+    });
+  });
+});
+
+router.get("/getsheets", (req, res, next) => {
+  Sheet.find()
+    .populate("cell")
+    .then((documents) => {
+      // console.log("Get roles :", documents);
+      res.status(200).json(documents);
+    });
+});
+
 router.get("/collections", (req, res) => {
   //var collectionvals = [];
   mongoose.connection.db.listCollections().toArray((err, collections) => {
     collectionvals = collections.map((collection) => {
       return collection.name;
     });
-    var coll = collectionvals.filter((data) => !data.includes("_keyvals"));
-    var colls = coll.filter((data) => !data.includes("users"));
-    var colldata = colls.filter((data) => !data.includes("roles"));
+    var cols = collectionvals.filter((data) => !data.includes("_keyvals"));
 
+    var colldata = cols.filter((data) => !data.includes("users"));
     if (colldata) {
-      console.log("Colldata", colldata);
+      //console.log("Colldata", colldata);
       usercollection = colldata[0];
     } else {
       console.log("No collections");
     }
   });
-  console.log("Collections in router: ", collectionvals);
+  //console.log("Collections in router: ", collectionvals);
   res.status(200).json(collectionvals);
 });
 
@@ -107,17 +140,6 @@ router.post("/", (req, res, next) => {
     console.log(addedValue);
     res.status(201).json({
       message: "Machine added succesfully!",
-    });
-  });
-});
-
-router.post("/addrole", (req, res, next) => {
-  Role = mongoose.model("Role", machineSchema);
-  let data = new Role(req.body);
-  data.save().then((addedValue) => {
-    console.log(addedValue);
-    res.status(201).json({
-      message: "Role added succesfully!",
     });
   });
 });
@@ -171,7 +193,8 @@ router.put("/:id", (req, res, next) => {
     angSignal: req.body.angSignal,
     modbus: req.body.modbus,
   });
-
+  // console.log("Before update: ", req.body.signalType);
+  // console.log("Before update: ", req.body.analogSignal);
   console.log("Before update: ", req.body);
   Machine.updateOne({ _id: req.params.id }, machine).then((result) => {
     console.log("At update: ", req.body);

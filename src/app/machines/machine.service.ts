@@ -68,8 +68,8 @@ export class MachineService {
           //console.log(machineData.message);
           // console.log(machineData.machines);
           //console.log('Get Machines KeyValues Called');
-          console.log('Got Roles', roleData.roles);
-          console.log(roleData.message);
+          // console.log('Got Roles', roleData.roles);
+          // console.log(roleData.message);
           return roleData.roles;
         })
       )
@@ -86,8 +86,8 @@ export class MachineService {
       )
       .pipe(
         map((collection) => {
-          console.log('Get Collection Called');
-          console.log(collection);
+          // console.log('Get Collection Called');
+          // console.log(collection);
           return collection;
         })
       )

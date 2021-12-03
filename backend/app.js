@@ -11,7 +11,6 @@ const conn = mongoose
   .then(() => console.log("Connected to MongoDB..."))
   .catch((err) => console.error("Could not connect to Mongo DB...", err));
 //
-//var collections = mongoose.connections[0].collections;
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));

@@ -5,21 +5,20 @@ import { HttpClientModule } from '@angular/common/http';
 import { MatMenuModule } from '@angular/material/menu';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { HeaderComponent } from './admin/header/header.component';
+import { HeaderComponent } from './header/header.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MachineListComponent } from './machines/machine-list/machine-list.component';
-import { DashboardComponent } from './dashboard/dashboard.component';
+import { DashboardComponent } from './admin/dashboard/dashboard.component';
 import { MachineFileImportComponent } from './machines/machine-file-import/machine-file-import.component';
 import { HomeComponent } from './home/home.component';
-import { ChecklistComponent } from './admin/checklist/checklist.component';
 import { AddRoleComponent } from './admin/role/add-role/add-role.component';
 import { RoleListComponent } from './admin/role/role-list/role-list.component';
 import { LoginComponent } from './auth/login/login.component';
-
+import { HomeLayoutComponent } from './layout/home-layout.component';
+import { LoginLayoutComponent } from './layout/login-layout.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatButtonModule } from '@angular/material/button';
-import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatTableModule } from '@angular/material/table';
@@ -37,6 +36,15 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatCardModule } from '@angular/material/card';
+import { AuthService } from './auth/auth.service';
+import { AuthGuard } from './auth/auth.guard';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { OperatorComponent } from './user/operator/operator.component';
+import { EditRoleComponent } from './admin/role/edit-role/edit-role.component';
+import { CellListComponent } from './admin/cells/cell-list/cell-list.component';
+import { AddCellsComponent } from './admin/cells/add-cells/add-cells.component';
+import { EditCellsComponent } from './admin/cells/edit-cells/edit-cells.component';
+import { SheetComponent } from './machines/sheet/sheet.component';
 
 @NgModule({
   declarations: [
@@ -48,16 +56,24 @@ import { MatCardModule } from '@angular/material/card';
     MachineEditComponent,
     MachineFileImportComponent,
     HomeComponent,
-    ChecklistComponent,
     AddRoleComponent,
     RoleListComponent,
     LoginComponent,
+    HomeLayoutComponent,
+    LoginLayoutComponent,
+    OperatorComponent,
+    EditRoleComponent,
+    CellListComponent,
+    AddCellsComponent,
+    EditCellsComponent,
+    SheetComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     FormsModule,
+    MatButtonToggleModule,
     ReactiveFormsModule,
     HttpClientModule,
     MatToolbarModule,
@@ -81,7 +97,7 @@ import { MatCardModule } from '@angular/material/card';
     MatGridListModule,
     MatCardModule,
   ],
-  providers: [],
+  providers: [AuthService, AuthGuard],
   bootstrap: [AppComponent],
   entryComponents: [MachineCreateComponent],
 })

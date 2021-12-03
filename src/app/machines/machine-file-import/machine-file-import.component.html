@@ -1,17 +1,71 @@
 <mat-spinner *ngIf="isLoading"></mat-spinner>
 <div *ngIf="!isLoading">
   <section class="example-section">
-    <h1 mat-dialog-title>Import the file</h1>
-    <input
-      type="file"
-      #fileImportInput
-      name="File Upload"
-      id="csvFileUpload"
-      (change)="fileChangeListener($event)"
-      accept=".csv"
-    />
+    <ng-container *ngIf="isForm">
+      <form class="import-form" #f="ngForm" (submit)="onSubmit(f)">
+        <h1 mat-dialog-title>Enter the values</h1>
 
-    <ng-container *ngIf="isKeyValue">
+        <mat-form-field>
+          <mat-label>Bay </mat-label>
+          <mat-select
+            ngModel
+            name="bay"
+            (selectionChange)="onSelectBay($event)"
+            required
+          >
+            <mat-option *ngFor="let bay of bays" [value]="bay">
+              {{ bay }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Cell </mat-label>
+          <mat-select
+            ngModel
+            name="cell"
+            (selectionChange)="onSelectCell($event)"
+            required
+          >
+            <mat-option *ngFor="let cell of cells" [value]="cell">
+              {{ cell }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Checklist name </mat-label>
+          <mat-select ngModel name="checklist" required>
+            <mat-option *ngFor="let cell of checkLists" [value]="cell">
+              {{ cell }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Opertaion No:</mat-label>
+          <input matInput ngModel name="opNo" required />
+        </mat-form-field>
+        <div class="btn">
+          <button mat-raised-button color="primary" type="submit">Next</button>
+          <button mat-raised-button mat-dialog-close color="warn">
+            Cancel
+          </button>
+        </div>
+      </form>
+    </ng-container>
+
+    <ng-container *ngIf="isImport">
+      <input
+        type="file"
+        #fileImportInput
+        name="File Upload"
+        id="csvFileUpload"
+        (change)="fileChangeListener($event)"
+        accept=".csv"
+      />
+    </ng-container>
+    <!-- <ng-container *ngIf="isKeyValue">
       <hr />
       <h4>Is there any Key-value pairs in the row:</h4>
       <mat-dialog-content>
@@ -78,7 +132,7 @@
         Next
         <mat-icon>navigate_next</mat-icon>
       </button>
-    </ng-container>
+    </ng-container> -->
 
     <ng-container *ngIf="isValidFile">
       <hr />
@@ -140,6 +194,13 @@
     >
       Save & Import
     </button>
-    <button mat-raised-button mat-dialog-close color="warn">Cancel</button>
+    <button
+      mat-raised-button
+      mat-dialog-close
+      color="warn"
+      [hidden]="!isCancel"
+    >
+      Cancel
+    </button>
   </section>
 </div>

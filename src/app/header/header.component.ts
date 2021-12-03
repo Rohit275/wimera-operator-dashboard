@@ -1,6 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { Observable } from 'rxjs';
 import { MatSidenav } from '@angular/material/sidenav';
 import { BreakpointObserver } from '@angular/cdk/layout';
+import { AuthService } from 'src/app/auth/auth.service';
 
 @Component({
   selector: 'app-header',
@@ -8,11 +10,29 @@ import { BreakpointObserver } from '@angular/cdk/layout';
   styleUrls: ['./header.component.css'],
 })
 export class HeaderComponent implements OnInit {
-  @ViewChild(MatSidenav) sidenav!: MatSidenav;
+  // @ViewChild(MatSidenav) sidenav!: MatSidenav;
+  @ViewChild('sidenav', { static: true }) sidenav: MatSidenav;
+  isLoggedIn$: Observable<boolean>;
+  Logout = 'Logout';
+  isDropdown: boolean = false;
+  DropDown: any[] = [{ value: 'Logout' }];
+  constructor(
+    private observer: BreakpointObserver,
+    private authService: AuthService
+  ) {}
 
-  constructor(private observer: BreakpointObserver) {}
+  ngOnInit(): void {
+    this.isLoggedIn$ = this.authService.isLoggedIn;
+  }
 
-  ngOnInit(): void {}
+  onProfile() {
+    this.authService.logout();
+  }
+
+  onSubmenu() {
+    // this.isDropDown=!this.isDropDown;
+    this.isDropdown = !this.isDropdown;
+  }
 
   ngAfterViewInit() {
     setTimeout(() => {
