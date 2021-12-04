@@ -83,7 +83,7 @@ router.post("/importCSV", (req, res, next) => {
     OperationNo: req.body.opNo,
     value: req.body.csv,
   });
-  console.log(data);
+  //console.log(data);
   data.save().then((addedValue) => {
     console.log(addedValue);
     res.status(201).json({

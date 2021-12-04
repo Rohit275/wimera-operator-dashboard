@@ -26,6 +26,7 @@ mat-form-field {
 .btn {
   flex-direction: row !important;
 }
+
 .import-form button {
   margin: 20px 20px 0 0;
   float: right !important;

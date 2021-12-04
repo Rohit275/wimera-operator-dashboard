@@ -3,8 +3,8 @@ import { AdminService } from 'src/app/admin/admin.service';
 import { MachineService } from '../machine.service';
 
 import { MatDialogRef } from '@angular/material/dialog';
-import { MatCheckboxChange } from '@angular/material/checkbox';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatCheckboxChange } from '@angular/material/checkbox';
 
 import { NgxCsvParser, NgxCSVParserError } from 'ngx-csv-parser';
 import * as _ from 'underscore';
@@ -129,9 +129,7 @@ export class MachineFileImportComponent implements OnInit {
   onSelectBay(event: MatSelectChange) {
     var bay = event.value;
     this.cells = [];
-    console.log('Before checklist bay: ', this.checkLists);
     this.checkLists = [];
-    console.log('After checklist bay: ', this.checkLists);
     this.currentBay = bay;
     for (var i = 0; i < this.cellData.length; i++) {
       if (bay == this.cellData[i].Bay) {

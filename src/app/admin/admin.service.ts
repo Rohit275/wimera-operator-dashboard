@@ -144,6 +144,7 @@ export class AdminService {
   }
 
   getParticularCell(data) {
+    console.log('getParticularCell', data);
     this.http
       .post<{ message: string }>(
         'http://localhost:3000/api/users/getcell',
@@ -154,7 +155,6 @@ export class AdminService {
         this.cellValue = respData;
         console.log(this.cellValue);
         console.log('Cell Fetched Successfully');
-        //this.usersUpdated.next([...this.users]);
       });
   }
 
@@ -167,10 +167,7 @@ export class AdminService {
         this.config
       )
       .subscribe((respData) => {
-        // this.cellValue = respData;
-        // console.log(this.cellValue);
         console.log('Sheet Added Successfully');
-        //this.usersUpdated.next([...this.users]);
       });
   }
 

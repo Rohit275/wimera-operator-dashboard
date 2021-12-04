@@ -3,6 +3,7 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { AdminService } from 'src/app/admin/admin.service';
 import { MachineFileImportComponent } from '../machine-file-import/machine-file-import.component';
+import { StepperImportComponent } from '../stepper-import/stepper-import.component';
 @Component({
   selector: 'app-sheet',
   templateUrl: './sheet.component.html',
@@ -51,11 +52,11 @@ export class SheetComponent implements OnInit {
   showDialog() {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
-    dialogConfig.autoFocus = true;
+    //dialogConfig.autoFocus = true;
     dialogConfig.width = '40%';
 
     this.isVisible = true;
-    this.dialog.open(MachineFileImportComponent, dialogConfig);
+    this.dialog.open(StepperImportComponent, dialogConfig);
   }
   ngOnDestroy() {
     this.sheetSub.unsubscribe();

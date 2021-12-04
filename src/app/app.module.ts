@@ -35,6 +35,7 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatGridListModule } from '@angular/material/grid-list';
+import { MatStepperModule } from '@angular/material/stepper';
 import { MatCardModule } from '@angular/material/card';
 import { AuthService } from './auth/auth.service';
 import { AuthGuard } from './auth/auth.guard';
@@ -45,6 +46,7 @@ import { CellListComponent } from './admin/cells/cell-list/cell-list.component';
 import { AddCellsComponent } from './admin/cells/add-cells/add-cells.component';
 import { EditCellsComponent } from './admin/cells/edit-cells/edit-cells.component';
 import { SheetComponent } from './machines/sheet/sheet.component';
+import { StepperImportComponent } from './machines/stepper-import/stepper-import.component';
 
 @NgModule({
   declarations: [
@@ -67,6 +69,7 @@ import { SheetComponent } from './machines/sheet/sheet.component';
     AddCellsComponent,
     EditCellsComponent,
     SheetComponent,
+    StepperImportComponent,
   ],
   imports: [
     BrowserModule,
@@ -86,6 +89,7 @@ import { SheetComponent } from './machines/sheet/sheet.component';
     MatDialogModule,
     MatFormFieldModule,
     MatInputModule,
+    MatStepperModule,
     MatMenuModule,
     MatSelectModule,
     MatButtonToggleModule,
