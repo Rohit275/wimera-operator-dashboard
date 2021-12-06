@@ -49,5 +49,5 @@ body {
   flex-direction: row;
   gap: 30px;
   justify-content: center;
-  margin-top: 50px;
+  padding-top: 50px;
 }

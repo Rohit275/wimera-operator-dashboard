@@ -32,6 +32,7 @@ export class OpDashboardComponent implements OnInit {
   ischecklist: boolean = false;
   checkLists = [];
   cellvals = [];
+  cardvals = [];
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -71,7 +72,14 @@ export class OpDashboardComponent implements OnInit {
   }
 
   onclickDiv(val) {
-    alert(val);
+    this.cardvals.push({
+      Bay: this.currentBay,
+      cellName: this.currentCell,
+      checklistName: val,
+    });
+    console.log('Card Values :', this.cardvals);
+    this.opservice.putcardvalues(this.cardvals);
+    this.router.navigate(['/operator/sheet']);
   }
   onSelectBay(event) {
     this.cellvals = [];

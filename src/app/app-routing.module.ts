@@ -13,6 +13,7 @@ import { SheetComponent } from './sheet/sheet/sheet.component';
 import { OpDashboardComponent } from './Operator/op-dashboard/op-dashboard.component';
 import { OperatorLayoutComponent } from './layout/operator-layout.component';
 import { NavbarComponent } from './Operator/navbar/navbar.component';
+import { OpSheetComponent } from './Operator/op-sheet/op-sheet.component';
 
 const routes: Routes = [
   {
@@ -42,7 +43,11 @@ const routes: Routes = [
     children: [
       {
         path: 'operator/dashboard/:uname',
-        component: NavbarComponent,
+        component: OpDashboardComponent,
+      },
+      {
+        path: 'operator/sheet',
+        component: OpSheetComponent,
       },
       { path: '', component: NavbarComponent },
     ],

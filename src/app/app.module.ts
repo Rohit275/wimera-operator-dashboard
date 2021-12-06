@@ -45,6 +45,8 @@ import { OpDashboardComponent } from './Operator/op-dashboard/op-dashboard.compo
 import { NavbarComponent } from './Operator/navbar/navbar.component';
 import { OperatorLayoutComponent } from './layout/operator-layout.component';
 import { RouterModule } from '@angular/router';
+import { OpSheetComponent } from './Operator/op-sheet/op-sheet.component';
+import { ResizeColumnDirective } from './Operator/op-sheet/resize-column.directive';
 
 @NgModule({
   declarations: [
@@ -65,6 +67,8 @@ import { RouterModule } from '@angular/router';
     StepperImportComponent,
     NavbarComponent,
     OperatorLayoutComponent,
+    OpSheetComponent,
+    ResizeColumnDirective,
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,13 @@
+body {
+  background-color: #fff;
+}
+
+.table-container {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+mat-table {
+  overflow: auto;
+  max-height: 750px;
+}

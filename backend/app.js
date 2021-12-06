@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 var collectionvals = ["Value"];
 const machineRoutes = require("./routes/machine");
 const userRoutes = require("./routes/users");
+const operatorRoutes = require("./routes/operator");
 
 const app = express();
 const conn = mongoose
@@ -30,5 +31,6 @@ app.use((req, res, next) => {
 
 app.use("/api/machines", machineRoutes);
 app.use("/api/users", userRoutes);
+app.use("/api/operators", operatorRoutes);
 
 module.exports = app;

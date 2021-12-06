@@ -89,18 +89,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
           baycellval.cellName,
           baycellval.checklistName
         );
-        // this.cellData.map((x) => {
-        //   if ((x.Bay = baycellval.Bay && x.cellName == baycellval.cellName)) {
-        //     this.lists.push(x.checklistName);
-        //   }
-        // });
         console.log('List :', this.lists);
-
-        // this.SheetValues(
-        //   baycellval.Bay,
-        //   baycellval.cellName,
-        //   baycellval.checklistName
-        // );
 
         console.log('Lists: ', this.lists);
         console.log('checkLists: ', this.checkLists);
