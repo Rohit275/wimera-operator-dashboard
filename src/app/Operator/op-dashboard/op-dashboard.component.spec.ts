@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { OperatorComponent } from './operator.component';
+import { OpDashboardComponent } from './op-dashboard.component';
 
-describe('OperatorComponent', () => {
-  let component: OperatorComponent;
-  let fixture: ComponentFixture<OperatorComponent>;
+describe('OpDashboardComponent', () => {
+  let component: OpDashboardComponent;
+  let fixture: ComponentFixture<OpDashboardComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ OperatorComponent ]
+      declarations: [ OpDashboardComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(OperatorComponent);
+    fixture = TestBed.createComponent(OpDashboardComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

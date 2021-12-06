@@ -7,38 +7,12 @@ import { RoleListComponent } from './admin/role/role-list/role-list.component';
 import { AuthGuard } from './auth/auth.guard';
 import { LoginComponent } from './auth/login/login.component';
 import { DashboardComponent } from './admin/dashboard/dashboard.component';
-import { HomeComponent } from './home/home.component';
 import { HomeLayoutComponent } from './layout/home-layout.component';
 import { LoginLayoutComponent } from './layout/login-layout.component';
-import { MachineListComponent } from './machines/machine-list/machine-list.component';
-import { OperatorComponent } from './user/operator/operator.component';
-import { SheetComponent } from './machines/sheet/sheet.component';
-// const routes: Routes = [
-//   {
-//     path: '',
-//     component: HomeComponent,
-//     canActivate: [AuthGuard],
-//     pathMatch: 'full',
-//   },
-//   // { path: '', redirectTo: '/login', pathMatch: 'full' },
-//
-//   {
-//     path: 'machine',
-//     component: MachineListComponent,
-//     canActivate: [AuthGuard],
-//   },{
-//     path: 'home',
-//     component: HomeComponent,
-//     canActivate: [AuthGuard],
-//     pathMatch: 'full',
-//   },
-//   { path: 'dashboard', component: HomeComponent, canActivate: [AuthGuard] },
-//   { path: 'role', component: RoleListComponent, canActivate: [AuthGuard] },
-//   { path: 'addRole', component: AddRoleComponent, canActivate: [AuthGuard] },
-//   { path: 'login', component: LoginComponent },
-//   // { path: 'first', component: MachineListComponent },
-//   { path: '**', redirectTo: '' },
-// ];
+import { SheetComponent } from './sheet/sheet/sheet.component';
+import { OpDashboardComponent } from './Operator/op-dashboard/op-dashboard.component';
+import { OperatorLayoutComponent } from './layout/operator-layout.component';
+import { NavbarComponent } from './Operator/navbar/navbar.component';
 
 const routes: Routes = [
   {
@@ -48,14 +22,9 @@ const routes: Routes = [
     children: [
       { path: '', component: DashboardComponent },
       {
-        path: 'machine',
-        component: MachineListComponent,
-      },
-      {
         path: 'admin/sheet',
         component: SheetComponent,
       },
-      { path: 'operator/dashboard', component: OperatorComponent },
       { path: 'admin/dashboard', component: DashboardComponent },
       { path: 'admin/role', component: RoleListComponent },
       {
@@ -64,8 +33,18 @@ const routes: Routes = [
       },
       { path: 'admin/cell', component: CellListComponent },
       { path: 'admin/addCell', component: AddCellsComponent },
-
-      // { path: 'login', component: LoginComponent },
+    ],
+  },
+  {
+    path: '',
+    component: OperatorLayoutComponent,
+    canActivate: [AuthGuard],
+    children: [
+      {
+        path: 'operator/dashboard/:uname',
+        component: NavbarComponent,
+      },
+      { path: '', component: NavbarComponent },
     ],
   },
   {

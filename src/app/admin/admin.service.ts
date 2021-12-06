@@ -4,7 +4,6 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
-import { ThrowStmt } from '@angular/compiler';
 
 @Injectable({ providedIn: 'root' })
 export class AdminService {
@@ -15,6 +14,9 @@ export class AdminService {
   public getcellId = [];
   public cellsId = [];
   private cells: any = [];
+  private roles: any = [];
+  private rolesUpdated = new Subject<any[]>();
+  private editId;
   public cellValue: any;
   private usersUpdated = new Subject<any[]>();
   private sheetsUpdated = new Subject<any[]>();
@@ -155,6 +157,38 @@ export class AdminService {
         this.cellValue = respData;
         console.log(this.cellValue);
         console.log('Cell Fetched Successfully');
+      });
+  }
+
+  getRoles() {
+    this.http
+      .get<{ message: string; roles: any }>(
+        'http://localhost:3000/api/users/getroles'
+      )
+      .pipe(
+        map((roleData) => {
+          return roleData.roles;
+        })
+      )
+      .subscribe((roleData) => {
+        this.roles = roleData;
+        this.rolesUpdated.next([...this.roles]);
+      });
+  }
+
+  getRoleUpdateListener() {
+    return this.rolesUpdated.asObservable();
+  }
+
+  addRole(data) {
+    this.http
+      .post<{ message: string }>(
+        'http://localhost:3000/api/users/addrole',
+        data
+      )
+      .subscribe((respData) => {
+        console.log(respData.message);
+        this.rolesUpdated.next([...this.roles]);
       });
   }
 

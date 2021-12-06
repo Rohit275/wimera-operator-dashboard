@@ -59,14 +59,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
           });
         });
         console.log('Table data :', this.sheetvals);
-        // this.dataSource = new MatTableDataSource<any>(this.sheetvals);
       });
     this.adminService.getCells();
     this.cellSub = this.adminService
       .getCellUpdateListener()
       .subscribe((users) => {
         this.cellData = users;
-        // this.dataSource = new MatTableDataSource<any>(users);
         console.log('Dashboard ngOnInit: ', this.cellData);
         this.cellData.map((x) => {
           this.data.push({

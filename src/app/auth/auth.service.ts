@@ -28,7 +28,6 @@ export class AuthService {
     this.http
       .post('http://localhost:3000/api/users/login', user)
       .subscribe((resp) => {
-        //console.log(resp);
         this.Userid = resp;
         console.log('User Id :', this.Userid);
         if (!this.Userid) {
@@ -41,12 +40,13 @@ export class AuthService {
         } else {
           console.log(this.Userid);
           var role = this.Userid.RoleName;
+          var username = this.Userid.userName;
           if (role == 'Admin') {
             this.loggedIn.next(true);
             this.router.navigate(['/admin/dashboard']);
           } else if (role == 'Operator') {
             this.loggedIn.next(true);
-            this.router.navigate(['/operator/dashboard']);
+            this.router.navigate(['/operator/dashboard', username]);
           }
         }
       });

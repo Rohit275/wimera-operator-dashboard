@@ -40,7 +40,6 @@ export class RoleListComponent implements OnInit, OnDestroy {
         this.access = [];
         this.cells = [];
         this.userdata = [...users];
-        //this.userFinal = users;
         this.userdata.map((x) => {
           if (x.RoleName != 'Admin') {
             this.users.push(x);

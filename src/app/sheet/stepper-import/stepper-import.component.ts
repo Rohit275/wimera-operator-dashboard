@@ -6,11 +6,9 @@ import { MatCheckboxChange } from '@angular/material/checkbox';
 import { AdminService } from 'src/app/admin/admin.service';
 import { Subscription } from 'rxjs';
 import { MatSelectChange } from '@angular/material/select';
-import { MachineService } from '../machine.service';
 import * as _ from 'underscore';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { MachineFileImportComponent } from '../machine-file-import/machine-file-import.component';
 
 @Component({
   selector: 'app-stepper-import',
@@ -58,9 +56,8 @@ export class StepperImportComponent implements OnInit {
     private _formBuilder: FormBuilder,
     private ngxCsvParser: NgxCsvParser,
     private adminService: AdminService,
-    public machineService: MachineService,
-    public dialogRef: MatDialogRef<MachineFileImportComponent>,
-    private _snackbar: MatSnackBar
+    private _snackbar: MatSnackBar,
+    private dialogRef: MatDialogRef<StepperImportComponent>
   ) {}
 
   ngOnInit() {
@@ -106,15 +103,12 @@ export class StepperImportComponent implements OnInit {
   }
 
   readData(files) {
-    //this.isValidFile = true;
     this.ngxCsvParser
       .parse(files[0], { header: this.header, delimiter: ',' })
       .pipe()
       .subscribe(
         (result: Array<any>) => {
           this.csvRecords.push(...result);
-
-          // this.isKeyValue = true;
         },
         (error: NgxCSVParserError) => {
           console.log('Error', error);
@@ -152,9 +146,7 @@ export class StepperImportComponent implements OnInit {
   }
 
   onSelectCell(event: MatSelectChange) {
-    //console.log(this.cells);
     var cell = event.value;
-    // this.cells = [];
     this.checkLists = [];
     for (var i = 0; i < this.cellData.length; i++) {
       if (
@@ -217,19 +209,14 @@ export class StepperImportComponent implements OnInit {
       //console.log(filteredData);
       console.log('OpNO: ');
       this.adminService.putImportValues(this.opNo, filteredData);
-      //this.machineService.importCsv(this.FileName, filteredData);
-      setTimeout(() => {
-        this.machineService.getMachines();
-        this.machineService.getCollections();
-        this.dialogRef.close();
-      }, 1000);
-      this._snackbar.open('New file imported!', '', {
-        horizontalPosition: 'center',
-        verticalPosition: 'top',
-        duration: 5000,
-      });
+      // this._snackbar.open('New file imported!', '', {
+      //   horizontalPosition: 'center',
+      //   verticalPosition: 'top',
+      //   duration: 5000,
+      // });
     }
   }
+
   onClose() {
     this.dialogRef.close();
   }

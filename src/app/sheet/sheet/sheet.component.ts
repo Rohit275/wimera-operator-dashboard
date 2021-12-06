@@ -2,8 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { AdminService } from 'src/app/admin/admin.service';
-import { MachineFileImportComponent } from '../machine-file-import/machine-file-import.component';
-import { StepperImportComponent } from '../stepper-import/stepper-import.component';
+import { StepperImportComponent } from '../../sheet/stepper-import/stepper-import.component';
 @Component({
   selector: 'app-sheet',
   templateUrl: './sheet.component.html',

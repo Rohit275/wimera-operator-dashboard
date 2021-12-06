@@ -1,0 +1,22 @@
+mat-toolbar {
+  background: #e6e6e6;
+  color: #0033cc;
+  font-size: 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+mat-icon.account {
+  height: 45px !important;
+  width: 45px !important;
+  font-size: 45px !important;
+}
+
+.main-container {
+  background: #fff;
+}
+
+mat-sidenav-container {
+  height: 93%;
+}

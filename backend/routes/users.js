@@ -2,11 +2,8 @@ const express = require("express");
 const mongoose = require("mongoose");
 const User = require("../models/users");
 const Cell = require("../models/Cells");
-
-// const userSchema = new mongoose.Schema({}, { strict: false });
-// const User = mongoose.model("user", User);
-// const Cell = mongoose.model("cell", userSchema);
 const router = express.Router();
+let uname;
 
 router.get("/getroles", (req, res, next) => {
   User.find()
@@ -17,6 +14,18 @@ router.get("/getroles", (req, res, next) => {
         message: "Roles fetched successfully!",
         users: documents,
       });
+    });
+});
+
+router.post("/getoperatorvalues", (req, res, next) => {
+  //console.log("Function triggered!", uname, req.body);
+  User.findOne({
+    RoleName: "Operator",
+    userName: uname,
+  })
+    .populate("cell")
+    .then((documents) => {
+      res.status(200).json(documents);
     });
 });
 
@@ -45,7 +54,7 @@ router.get("/:id", (req, res, next) => {
     if (machine) {
       res.status(200).json(machine);
     } else {
-      res.status(404).json({ message: "Machine not found!" });
+      res.status(404).json({ message: "User not found!" });
     }
   });
 });
@@ -88,11 +97,8 @@ router.post("/addcell", (req, res, next) => {
 });
 
 router.post("/getcellid", (req, res, next) => {
-  //let { Role, UName, Pass } = req.body;
   var cells = req.body;
   console.log("cells", req.body);
-  //console.log("CellName :", req.body.cellName);
-  //console.log("ChecklistName :", req.body.checklistName);
   Cell.findOne({
     cellName: req.body.cellName,
     checklistName: req.body.checklistName,
@@ -109,18 +115,16 @@ router.post("/getcellid", (req, res, next) => {
 });
 
 router.post("/login", (req, res, next) => {
-  //let { Role, UName, Pass } = req.body;
-  console.log(req.body);
   User.findOne({
     RoleName: req.body.role,
     userName: req.body.userName,
     Password: req.body.password,
   }).then((user) => {
     if (!user) {
-      console.log(user);
+      //console.log(user);
       return res.json(null);
     } else {
-      console.log(user);
+      uname = user.userName;
       res.status(200).json(user);
     }
   });
