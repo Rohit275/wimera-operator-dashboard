@@ -19,9 +19,11 @@ router.get("/getroles", (req, res, next) => {
 
 router.post("/getoperatorvalues", (req, res, next) => {
   //console.log("Function triggered!", uname, req.body);
+  var data = req.body.uname;
+  //console.log("Req body :", data);
   User.findOne({
     RoleName: "Operator",
-    userName: uname,
+    userName: data,
   })
     .populate("cell")
     .then((documents) => {

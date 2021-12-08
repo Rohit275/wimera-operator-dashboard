@@ -2,6 +2,18 @@ h1 {
   text-align: center;
 }
 
+/* .row {
+  display: flex;
+  flex-direction: row !important;
+  flex-wrap: nowrap;
+} */
+
+/* .col {
+  display: flex;
+  flex-direction: column !important;
+  flex-wrap: nowrap;
+} */
+
 button {
   margin: 20px 20px 0 0;
   float: right;

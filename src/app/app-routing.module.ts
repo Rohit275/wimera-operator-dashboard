@@ -42,13 +42,23 @@ const routes: Routes = [
     canActivate: [AuthGuard],
     children: [
       {
-        path: 'operator/dashboard/:uname',
+        path: 'operator/:uname',
         component: OpDashboardComponent,
+        children: [
+          {
+            path: 'sheet',
+            component: OpSheetComponent,
+          },
+          {
+            path: 'dashboard',
+            component: OpDashboardComponent,
+          },
+        ],
       },
-      {
-        path: 'operator/sheet',
-        component: OpSheetComponent,
-      },
+      // {
+      //   path: 'operator/sheet',
+      //   component: OpSheetComponent,
+      // },
       { path: '', component: NavbarComponent },
     ],
   },

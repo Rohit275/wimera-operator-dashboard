@@ -47,6 +47,7 @@ import { OperatorLayoutComponent } from './layout/operator-layout.component';
 import { RouterModule } from '@angular/router';
 import { OpSheetComponent } from './Operator/op-sheet/op-sheet.component';
 import { ResizeColumnDirective } from './Operator/op-sheet/resize-column.directive';
+import { DatePipe } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -100,7 +101,7 @@ import { ResizeColumnDirective } from './Operator/op-sheet/resize-column.directi
     MatGridListModule,
     MatCardModule,
   ],
-  providers: [AuthService, AuthGuard],
+  providers: [AuthService, AuthGuard, DatePipe],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

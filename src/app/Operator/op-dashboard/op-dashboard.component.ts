@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import {
   ActivatedRoute,
   NavigationEnd,
@@ -23,7 +23,8 @@ export interface PeriodicElement {
   templateUrl: './op-dashboard.component.html',
   styleUrls: ['./op-dashboard.component.css'],
 })
-export class OpDashboardComponent implements OnInit {
+export class OpDashboardComponent implements OnInit, OnDestroy {
+  getroles: any = [];
   roles: any = [];
   cells: any = [];
   currentBay;
@@ -33,6 +34,10 @@ export class OpDashboardComponent implements OnInit {
   checkLists = [];
   cellvals = [];
   cardvals = [];
+  roleSub;
+  opId: any;
+  userName: any;
+  isNavigate: boolean = false;
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -52,12 +57,23 @@ export class OpDashboardComponent implements OnInit {
   filter$: Observable<string>;
 
   ngOnInit(): void {
-    this.opservice.getCells();
-    this.opservice.getRoleUpdateListener().subscribe((roles) => {
-      this.roles = roles;
+    this.isNavigate = false;
+    console.log('Navigate :', this.isNavigate);
+    this.userName = this.route.snapshot.paramMap.get('uname');
+    console.log('Username from route: ', this.userName);
+    this.opservice.getRoles(this.userName);
+    this.roleSub = this.opservice.getRoleUpdateListener().subscribe((roles) => {
+      this.getroles = roles;
+      console.log('Roles :', this.getroles);
+      // this.getroles.map((x) => {
+      //   this.roles.push(x.cell);
+      // });
+      this.opId = this.getroles._id;
+      this.roles = this.getroles.cell;
+      console.log('Cells :', this.roles);
       this.roles.forEach((x) => {
-        console.log('Cells in foreach :', x);
         this.cells.push({
+          id: x._id,
           Bay: x.Bay,
           cellName: x.cellName,
           checklistName: x.checklistName,
@@ -72,15 +88,21 @@ export class OpDashboardComponent implements OnInit {
   }
 
   onclickDiv(val) {
+    console.log(val);
     this.cardvals.push({
+      id: val.id,
       Bay: this.currentBay,
       cellName: this.currentCell,
-      checklistName: val,
+      checklistName: val.checklist,
     });
     console.log('Card Values :', this.cardvals);
-    this.opservice.putcardvalues(this.cardvals);
-    this.router.navigate(['/operator/sheet']);
+    this.opservice.putcardvalues(this.cardvals, this.opId);
+    this.isNavigate = true;
+    this.checkLists = [];
+    this.ischecklist = false;
+    this.router.navigate(['./sheet'], { relativeTo: this.route });
   }
+
   onSelectBay(event) {
     this.cellvals = [];
     var bay = event.value;
@@ -105,9 +127,14 @@ export class OpDashboardComponent implements OnInit {
     this.ischecklist = true;
     this.cells.forEach((x) => {
       if (this.currentBay == x.Bay && this.currentCell == x.cellName) {
-        this.checkLists.push(x.checklistName);
+        this.checkLists.push({ id: x.id, checklist: x.checklistName });
       }
     });
     console.log('Checklists :', this.checkLists);
+  }
+
+  ngOnDestroy() {
+    console.log('Ng ondestroy!');
+    this.roleSub.unsubscribe();
   }
 }

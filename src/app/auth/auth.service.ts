@@ -46,7 +46,7 @@ export class AuthService {
             this.router.navigate(['/admin/dashboard']);
           } else if (role == 'Operator') {
             this.loggedIn.next(true);
-            this.router.navigate(['/operator/dashboard', username]);
+            this.router.navigate(['/operator/', username]);
           }
         }
       });

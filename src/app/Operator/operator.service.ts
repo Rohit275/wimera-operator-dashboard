@@ -10,6 +10,7 @@ export class OperatorService {
     },
   };
   roles: any = [];
+  opId: any;
   sheets: any = [];
   currentcardvals = [];
   private rolesUpdated = new Subject<any[]>();
@@ -26,17 +27,18 @@ export class OperatorService {
     return this.sheetsUpdated.asObservable();
   }
 
-  getCells() {
+  getRoles(username) {
     var val = 'Operator';
+    //console.log('UName from service :', username);
     this.http
       .post<{ message: string }>(
         'http://localhost:3000/api/users/getoperatorvalues',
-        val
+        { uname: username }
       )
       .subscribe((respData) => {
         console.log(respData);
         this.roles = respData;
-        this.rolesUpdated.next(this.roles.cell);
+        this.rolesUpdated.next(this.roles);
         console.log('Roles Fetched Successfully');
       });
   }
@@ -47,16 +49,42 @@ export class OperatorService {
       .subscribe((data) => {
         console.log(data);
         this.sheets = data;
-        this.sheetsUpdated.next(this.sheets);
+
+        this.sheetsUpdated.next([...this.sheets]);
         console.log('Sheets Fetched Successfully');
       });
   }
 
-  putcardvalues(vals) {
+  putcardvalues(vals, id) {
     this.currentcardvals = vals;
+    this.opId = id;
   }
 
   getcardvalues() {
     return this.currentcardvals;
+  }
+
+  UpdateActivity(opid, sheetid) {
+    var date = new Date();
+    console.log('Update Activity :', date, opid, sheetid);
+    this.http
+      .post<{ message: string }>(
+        'http://localhost:3000/api/operators/updateactivity/',
+        { opId: opid, sheetId: sheetid, currdate: date }
+      )
+      .subscribe((respData) => {
+        console.log(respData);
+      });
+  }
+
+  UpdateSheet(id, val) {
+    this.http
+      .put<{ message: string }>(
+        'http://localhost:3000/api/operators/updatesheet/' + id,
+        val
+      )
+      .subscribe((respData) => {
+        console.log('Sheet Updated Successfully!');
+      });
   }
 }

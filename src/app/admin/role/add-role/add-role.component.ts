@@ -7,7 +7,7 @@ import {
 } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { MatCheckboxChange } from '@angular/material/checkbox';
-
+import { MatSelectChange } from '@angular/material/select';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subscription } from 'rxjs';
@@ -23,14 +23,20 @@ export class AddRoleComponent implements OnInit {
   cellData = [];
   checkedArray: boolean[];
   checked: string;
+  finalVal = [];
   cellName;
   currentCell;
+  currentBay;
+  isChecklist: boolean = false;
   iscellsChecked: boolean = false;
   checklist = [];
+  cellSelect = '';
   cells = [];
   allotedVals = [];
   cellSub: Subscription;
   selectedCells = [];
+  bay: any = [];
+  isBaySelected: boolean = false;
   constructor(
     public dialogRef: MatDialogRef<AddRoleComponent>,
     private _snackbar: MatSnackBar,
@@ -49,10 +55,10 @@ export class AddRoleComponent implements OnInit {
         this.cellData = users;
         // this.dataSource = new MatTableDataSource<any>(users);
         console.log('Add Role ngOnInit: ', this.cellData);
-        this.cells = this.cellData.map((cells) => {
-          return cells.cellName;
+        this.bay = this.cellData.map((cells) => {
+          return cells.Bay;
         });
-        this.cells = [...new Set(this.cells)];
+        this.bay = [...new Set(this.bay)];
         console.log('Add Role CellNaem ngOnInit: ', this.cells);
       });
   }
@@ -64,6 +70,42 @@ export class AddRoleComponent implements OnInit {
       }
     });
     console.log(this.checklist);
+  }
+
+  onBaySelect(event: MatSelectChange) {
+    var val = event.value;
+    this.checkedArray = [];
+    this.checkboxes.forEach((x) => {
+      x.nativeElement.checked = false;
+    });
+    this.cells = [];
+    this.isChecklist = false;
+    console.log('Bay val:', val);
+    this.cellData.forEach((x) => {
+      if (val == x.Bay) {
+        this.cells.push(x.cellName);
+      }
+    });
+    this.currentBay = val;
+    this.cells = [...new Set(this.cells)];
+    this.isBaySelected = true;
+    this.cellSelect = '';
+  }
+
+  onCellSelect(event: MatSelectChange) {
+    this.checkedArray = [];
+    console.log('Cell val :', event.value);
+    this.checkboxes.forEach((x) => {
+      x.nativeElement.checked = false;
+    });
+    this.checklist = [];
+    var val = event.value;
+    this.cellData.forEach((x) => {
+      if (val == x.cellName && this.currentBay == x.Bay)
+        this.checklist.push(x.checklistName);
+    });
+    this.currentCell = val;
+    this.isChecklist = true;
   }
 
   onCheckEvent(value, event: MatCheckboxChange) {
@@ -92,16 +134,18 @@ export class AddRoleComponent implements OnInit {
         this.iscellsChecked = false;
       }
     }
+    this.finalVal = this.allotedVals;
     console.log('Alloted Vals :', this.allotedVals);
     // console.log(this.selectedCells);
   }
 
   onCheckChecklist(value, event: MatCheckboxChange) {
+    console.log('Checklist value :', value);
     if (event.checked) {
       this.allotedVals.push({
         cell: this.currentCell,
-        checklists: value.checklist,
-        Bay: value.Bay,
+        checklists: value,
+        Bay: this.currentBay,
       });
     } else {
       let index = this.allotedVals.indexOf(value);
