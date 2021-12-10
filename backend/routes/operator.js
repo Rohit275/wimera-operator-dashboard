@@ -44,12 +44,13 @@ router.post("/updateactivity", (req, res, next) => {
   }).then((result) => {
     if (result) {
       console.log("REsult :", result._id);
-      Activity.updateOne({ _id: result._id }, { lastUpdated: curDate }).then(
-        (result) => {
-          res.status(200).json({ message: "Activity Updated Successfully" });
-          return;
-        }
-      );
+      Activity.updateOne(
+        { _id: result._id },
+        { lastUpdated: curDate, status: "Pending" }
+      ).then((result) => {
+        res.status(200).json({ message: "Activity Updated Successfully" });
+        return;
+      });
     } else {
       data.save().then((result) => {
         res.status(201).json({

@@ -47,6 +47,9 @@ export class AuthService {
           } else if (role == 'Operator') {
             this.loggedIn.next(true);
             this.router.navigate(['/operator/', username]);
+          } else if (role == 'Supervisor') {
+            this.loggedIn.next(true);
+            this.router.navigate(['/supervisor/', username]);
           }
         }
       });

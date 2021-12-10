@@ -14,6 +14,9 @@ import { OpDashboardComponent } from './Operator/op-dashboard/op-dashboard.compo
 import { OperatorLayoutComponent } from './layout/operator-layout.component';
 import { NavbarComponent } from './Operator/navbar/navbar.component';
 import { OpSheetComponent } from './Operator/op-sheet/op-sheet.component';
+import { SupervisorLayoutComponent } from './layout/supervisor-layout.component';
+import { SvViewtableComponent } from './supervisor/sv-viewtable/sv-viewtable.component';
+import { SvReportComponent } from './supervisor/sv-report/sv-report.component';
 
 const routes: Routes = [
   {
@@ -60,6 +63,27 @@ const routes: Routes = [
       //   component: OpSheetComponent,
       // },
       { path: '', component: NavbarComponent },
+    ],
+  },
+  {
+    path: '',
+    component: SupervisorLayoutComponent,
+    canActivate: [AuthGuard],
+    children: [
+      {
+        path: 'supervisor/:uname',
+        component: SvViewtableComponent,
+        children: [
+          {
+            path: 'manage',
+            component: SvViewtableComponent,
+          },
+          {
+            path: 'report',
+            component: SvReportComponent,
+          },
+        ],
+      },
     ],
   },
   {

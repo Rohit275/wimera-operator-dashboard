@@ -159,6 +159,20 @@ export class AddRoleComponent implements OnInit {
     this.dialogRef.close();
   }
 
+  onSubmitSV(form: NgForm) {
+    console.log(form.value);
+    if (form.invalid) {
+      return;
+    }
+    this.adminService.addSupervisor(form.value);
+    this._snackbar.open('New value added!', '', {
+      horizontalPosition: 'center',
+      verticalPosition: 'top',
+      duration: this.durationInSeconds * 1000,
+    });
+    this.onCancel(form);
+  }
+
   oncreateRole(form: NgForm) {
     console.log(form.value);
     if (form.invalid) {

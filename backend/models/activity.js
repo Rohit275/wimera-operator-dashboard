@@ -14,6 +14,7 @@ const Activity = new mongoose.Schema({
     },
   ],
   lastUpdated: { type: Date },
+  status: { type: String, default: "Pending" },
 });
 
 module.exports = mongoose.model("Activity", Activity);

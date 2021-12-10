@@ -15,6 +15,7 @@ export class AdminService {
   public cellsId = [];
   private cells: any = [];
   private roles: any = [];
+  public popcellId: any = [];
   private rolesUpdated = new Subject<any[]>();
   private editId;
   public cellValue: any;
@@ -130,6 +131,22 @@ export class AdminService {
       });
   }
 
+  addSupervisor(data) {
+    this.http
+      .post<{ message: string }>(
+        'http://localhost:3000/api/users/addsuperuser',
+        {
+          data: data,
+        },
+        this.config
+      )
+      .subscribe((respData) => {
+        console.log(respData);
+        console.log('Supervisor Added Successfully');
+        this.usersUpdated.next([...this.users]);
+      });
+  }
+
   getSheets() {
     this.http
       .get<{ message: string }>('http://localhost:3000/api/machines/getsheets')
@@ -237,6 +254,38 @@ export class AdminService {
         Id.push(responseList[i]);
       }
       this.storeRole(data, Id);
+    });
+  }
+
+  public populatecellId(): Observable<any[]> {
+    let response = [];
+    // var cellval:any ;
+    console.log('CellsId in observable', this.cellsId);
+    for (var i = 0; i < this.cellsId.length; i++) {
+      var cellval = {
+        cellName: this.cellsId[i].cell,
+        checklistName: this.cellsId[i].checklists,
+        Bay: this.cellsId[i].Bay,
+      };
+      console.log('Cellval in observable', cellval);
+      response[i] = this.http.post(
+        'http://localhost:3000/api/users/getcellid',
+        cellval
+      );
+    }
+    // console.log(forkJoin(response));
+    return forkJoin(response);
+  }
+
+  getCellIds(val) {
+    var Id = [];
+
+    console.log('Add user called !');
+    this.getIds().subscribe((responseList) => {
+      for (var i = 0; i < this.cellsId.length; i++) {
+        console.log('Obesrvable :', responseList[i]);
+        Id.push(responseList[i]);
+      }
     });
   }
 

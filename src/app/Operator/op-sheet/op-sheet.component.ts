@@ -5,7 +5,6 @@ import { OperatorService } from '../operator.service';
 import { DatePipe } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
-import { ThrowStmt } from '@angular/compiler';
 import { OpDashboardComponent } from '../op-dashboard/op-dashboard.component';
 
 @Component({
@@ -84,7 +83,7 @@ export class OpSheetComponent implements OnInit {
 
       //let nextday = this.date.transform(dte, 'MMM d');
       // console.log(this.today, yesterday, nextday);
-      const datearr = [yesterday, this.today, nextday];
+      const datearr = [this.today];
       var curdate =
         new Date().getDate().toString() +
         (new Date().getMonth() + 1).toString();
@@ -96,7 +95,7 @@ export class OpSheetComponent implements OnInit {
       if (this.tablevals.length > 0) {
         this.dynamicDisplayedColumns = Object.keys(this.tablevals[0]);
         this.dynamicDisplayedColumns.map((x) => {
-          if (x == this.today && x == yesterday && x == nextday) {
+          if (x == this.today) {
             this.isDate = true;
           }
           // if (x != this.today) {

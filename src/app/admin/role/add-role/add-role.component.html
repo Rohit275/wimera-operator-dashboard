@@ -1,81 +1,93 @@
-<form class="role-form" #f="ngForm" (submit)="oncreateRole(f)">
-  <h1 mat-dialog-title>Enter the values</h1>
-
-  <ng-container>
-    <mat-form-field>
-      <mat-label>Role Name</mat-label>
-      <input matInput name="RoleName" ngModel required />
-    </mat-form-field>
-    <mat-form-field>
-      <mat-label>User Name</mat-label>
-      <input matInput name="userName" ngModel required />
-    </mat-form-field>
-    <mat-form-field>
-      <mat-label>Password</mat-label>
-      <input matInput name="Password" ngModel required />
-    </mat-form-field>
-    <div class="row">
-      <div class="col">
+<h1 mat-dialog-title>Roles</h1>
+<mat-tab-group dynamicHeight>
+  <mat-tab label="Operator">
+    <form class="role-form" #f="ngForm" (submit)="oncreateRole(f)">
+      <ng-container>
         <mat-form-field>
-          <mat-label>Bay</mat-label>
-          <mat-select name="Bay" (selectionChange)="onBaySelect($event)">
-            <mat-option *ngFor="let val of bay" [value]="val">
-              {{ val }}
-            </mat-option>
-          </mat-select>
+          <mat-label>Role Name</mat-label>
+          <input matInput name="RoleName" ngModel required />
         </mat-form-field>
+        <mat-form-field>
+          <mat-label>User Name</mat-label>
+          <input matInput name="userName" ngModel required />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Password</mat-label>
+          <input matInput name="Password" ngModel required />
+        </mat-form-field>
+        <div class="row">
+          <div class="col">
+            <mat-form-field>
+              <mat-label>Bay</mat-label>
+              <mat-select name="Bay" (selectionChange)="onBaySelect($event)">
+                <mat-option *ngFor="let val of bay" [value]="val">
+                  {{ val }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
 
-        <div *ngIf="isBaySelected">
-          <mat-form-field>
-            <mat-label>Cell Name</mat-label>
-            <mat-select
-              name="Cell"
-              [(ngModel)]="cellSelect"
-              (selectionChange)="onCellSelect($event)"
-            >
-              <mat-option *ngFor="let val of cells" [value]="val">
-                {{ val }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
+            <div *ngIf="isBaySelected">
+              <mat-form-field>
+                <mat-label>Cell Name</mat-label>
+                <mat-select
+                  name="Cell"
+                  [(ngModel)]="cellSelect"
+                  (selectionChange)="onCellSelect($event)"
+                >
+                  <mat-option *ngFor="let val of cells" [value]="val">
+                    {{ val }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="col" *ngIf="isChecklist">
+            Checklists:
+            <p *ngFor="let cell of checklist; let i = index">
+              <mat-checkbox
+                (change)="onCheckChecklist(cell, $event)"
+                [(ngModel)]="checkedArray[i]"
+                name="cell"
+              >
+                {{ cell }}
+              </mat-checkbox>
+            </p>
+          </div>
         </div>
-      </div>
-      <div class="col" *ngIf="isChecklist">
-        Checklists:
-        <p *ngFor="let cell of checklist; let i = index">
-          <mat-checkbox
-            (change)="onCheckChecklist(cell, $event)"
-            [(ngModel)]="checkedArray[i]"
-            name="cell"
-          >
-            {{ cell }}
-          </mat-checkbox>
-        </p>
-      </div>
-    </div>
-  </ng-container>
+      </ng-container>
 
-  <div class="button-row">
-    <button type="submit" mat-raised-button color="primary">Submit</button>
-    <button mat-raised-button color="warn" (click)="onCancel(f)">Cancel</button>
-  </div>
-</form>
+      <div class="button-row">
+        <button type="submit" mat-raised-button color="primary">Submit</button>
+        <button mat-raised-button color="warn" (click)="onCancel(f)">
+          Cancel
+        </button>
+      </div>
+    </form>
+  </mat-tab>
 
-<!-- <mat-label>Allocated cells</mat-label>
-<p *ngFor="let cell of cells; let i = index">
-  <mat-checkbox (change)="onCheckEvent(cell, $event)">
-    {{ cell }}
-  </mat-checkbox>
-</p>
-</div>
-<div class="col" *ngIf="iscellsChecked">
-<mat-label>Checklists of {{ cellName }}</mat-label>
-<p *ngFor="let cell of checklist; let i = index">
-  <mat-checkbox
-    (change)="onCheckChecklist(cell, $event)"
-    [(ngModel)]="checkedArray[i]"
-    name="cell"
-  >
-    Bay {{ cell.Bay }} {{ cell.checklist }}
-  </mat-checkbox>
-</p> -->
+  <mat-tab label="Supervisor">
+    <form class="role-form" #form="ngForm" (submit)="onSubmitSV(form)">
+      <ng-container>
+        <mat-form-field>
+          <mat-label>Role Name</mat-label>
+          <input matInput name="roleName" ngModel required />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>User Name</mat-label>
+          <input matInput name="username" ngModel required />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Password</mat-label>
+          <input matInput name="password" ngModel required />
+        </mat-form-field>
+      </ng-container>
+
+      <div class="button-row">
+        <button type="submit" mat-raised-button color="primary">Submit</button>
+        <button mat-raised-button color="warn" (click)="onCancel(f)">
+          Cancel
+        </button>
+      </div>
+    </form>
+  </mat-tab>
+</mat-tab-group>

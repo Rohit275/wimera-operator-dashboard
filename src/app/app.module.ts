@@ -48,7 +48,11 @@ import { RouterModule } from '@angular/router';
 import { OpSheetComponent } from './Operator/op-sheet/op-sheet.component';
 import { ResizeColumnDirective } from './Operator/op-sheet/resize-column.directive';
 import { DatePipe } from '@angular/common';
-
+import { SvHeaderComponent } from './supervisor/sv-header/sv-header.component';
+import { SvViewtableComponent } from './supervisor/sv-viewtable/sv-viewtable.component';
+import { SupervisorLayoutComponent } from './layout/supervisor-layout.component';
+import { SvReviewtableComponent } from './supervisor/sv-reviewtable/sv-reviewtable.component';
+import { SvReportComponent } from './supervisor/sv-report/sv-report.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -70,6 +74,11 @@ import { DatePipe } from '@angular/common';
     OperatorLayoutComponent,
     OpSheetComponent,
     ResizeColumnDirective,
+    SvHeaderComponent,
+    SvViewtableComponent,
+    SupervisorLayoutComponent,
+    SvReviewtableComponent,
+    SvReportComponent,
   ],
   imports: [
     BrowserModule,

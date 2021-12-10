@@ -5,7 +5,7 @@ var collectionvals = ["Value"];
 const machineRoutes = require("./routes/machine");
 const userRoutes = require("./routes/users");
 const operatorRoutes = require("./routes/operator");
-
+const supervisorRoutes = require("./routes/supervisor");
 const app = express();
 const conn = mongoose
   .connect("mongodb://localhost/wimer-task2")
@@ -32,5 +32,6 @@ app.use((req, res, next) => {
 app.use("/api/machines", machineRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/operators", operatorRoutes);
+app.use("/api/supervisor", supervisorRoutes);
 
 module.exports = app;
