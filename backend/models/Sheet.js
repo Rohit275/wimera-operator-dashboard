@@ -1,10 +1,5 @@
 const mongoose = require("mongoose");
 
-// var data = [];
-// function getHeaders(Headers) {
-//   data = Headers;
-//   console.log("Receive Headers in the Schema File", data);
-// }
 const Sheet = mongoose.Schema({
   cell: [
     {
