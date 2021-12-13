@@ -4,6 +4,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { SupervisorService } from '../supervisor.service';
 import { SvReviewtableComponent } from '../sv-reviewtable/sv-reviewtable.component';
 import { DatePipe } from '@angular/common';
+import { ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'app-sv-viewtable',
   templateUrl: './sv-viewtable.component.html',
@@ -26,13 +27,21 @@ export class SvViewtableComponent implements OnInit {
     'status',
   ];
 
+  username;
+
   constructor(
     private supervisorservice: SupervisorService,
     private dialog: MatDialog,
-    private date: DatePipe
+    private date: DatePipe,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
+    this.username = this.route.snapshot.paramMap.get('uname');
+    console.log('SV-viewtable:', this.username);
+    this.supervisorservice.currentUser = this.username;
+    console.log('SV-viewtable ser:', this.supervisorservice.currentUser);
+
     this.supervisorservice.getactivities();
     this.supervisorservice.getActivitiesUpdatedListener().subscribe((data) => {
       this.activities = [];

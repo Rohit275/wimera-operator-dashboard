@@ -28,6 +28,7 @@ export class AuthService {
     this.http
       .post('http://localhost:3000/api/users/login', user)
       .subscribe((resp) => {
+        console.log('Auth service: ', resp);
         this.Userid = resp;
         console.log('User Id :', this.Userid);
         if (!this.Userid) {
@@ -37,20 +38,19 @@ export class AuthService {
             duration: this.durationInSeconds * 1000,
           });
           return;
-        } else {
-          console.log(this.Userid);
-          var role = this.Userid.RoleName;
-          var username = this.Userid.userName;
-          if (role == 'Admin') {
-            this.loggedIn.next(true);
-            this.router.navigate(['/admin/dashboard']);
-          } else if (role == 'Operator') {
-            this.loggedIn.next(true);
-            this.router.navigate(['/operator/', username]);
-          } else if (role == 'Supervisor') {
-            this.loggedIn.next(true);
-            this.router.navigate(['/supervisor/', username]);
-          }
+        }
+        console.log(this.Userid);
+        var role = this.Userid.RoleName;
+        var username = this.Userid.userName;
+        if (role == 'Admin') {
+          this.loggedIn.next(true);
+          this.router.navigate(['/admin/dashboard']);
+        } else if (role == 'Operator') {
+          this.loggedIn.next(true);
+          this.router.navigate(['/operator/', username, 'dashboard']);
+        } else if (role == 'Supervisor') {
+          this.loggedIn.next(true);
+          this.router.navigate(['/supervisor/', username, 'manage']);
         }
       });
   }

@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-operator-layout',
-  template: ` <app-navbar></app-navbar>`,
+  template: ` <router-outlet></router-outlet>`,
   styles: [],
 })
 export class OperatorLayoutComponent {}

@@ -5,7 +5,7 @@ import { OperatorService } from '../operator.service';
 import { DatePipe } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
-import { OpDashboardComponent } from '../op-dashboard/op-dashboard.component';
+import { ChecklistsComponent } from '../checklists/checklists.component';
 
 @Component({
   selector: 'app-op-sheet',
@@ -36,7 +36,7 @@ export class OpSheetComponent implements OnInit {
     private router: Router,
     private _location: Location,
     private route: ActivatedRoute,
-    private opdashboard: OpDashboardComponent
+    private opChecklists: ChecklistsComponent
   ) {}
 
   ngOnInit(): void {
@@ -128,12 +128,12 @@ export class OpSheetComponent implements OnInit {
     });
     this.opService.UpdateSheet(this.objid, this.tablevals);
     this.opService.UpdateActivity(this.opId, this.objid);
-    this.opdashboard.isNavigate = false;
-    this.router.navigate(['/operator/', this.userName]);
+    this.opChecklists.isNavigate = false;
+    this.router.navigate(['../'], { relativeTo: this.route });
     //console.log('After Update :',this.objid ,this.tablevals);
   }
   onBack() {
-    this.opdashboard.isNavigate = false;
-    this.router.navigate(['/operator/', this.userName]);
+    this.opChecklists.isNavigate = false;
+    this.router.navigate(['../'], { relativeTo: this.route });
   }
 }

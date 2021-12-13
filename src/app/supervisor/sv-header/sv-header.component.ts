@@ -3,6 +3,8 @@ import { Observable } from 'rxjs';
 import { MatSidenav } from '@angular/material/sidenav';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { AuthService } from 'src/app/auth/auth.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { SupervisorService } from '../supervisor.service';
 
 @Component({
   selector: 'app-sv-header',
@@ -15,13 +17,19 @@ export class SvHeaderComponent implements OnInit {
   Logout = 'Logout';
   isDropdown: boolean = false;
   DropDown: any[] = [{ value: 'Logout' }];
+  public username;
   constructor(
     private observer: BreakpointObserver,
-    private authService: AuthService
+    private authService: AuthService,
+    private supervisorService: SupervisorService,
+    private router: Router,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
     this.isLoggedIn$ = this.authService.isLoggedIn;
+    // this.username = this.supervisorService.currentUser;
+    // console.log(this.username);
   }
 
   onProfile() {

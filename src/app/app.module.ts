@@ -2,8 +2,9 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { MatMenuModule } from '@angular/material/menu';
 import { AppRoutingModule } from './app-routing.module';
+import { DatePipe } from '@angular/common';
+
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -13,6 +14,8 @@ import { RoleListComponent } from './admin/role/role-list/role-list.component';
 import { LoginComponent } from './auth/login/login.component';
 import { HomeLayoutComponent } from './layout/home-layout.component';
 import { LoginLayoutComponent } from './layout/login-layout.component';
+
+import { MatMenuModule } from '@angular/material/menu';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatButtonModule } from '@angular/material/button';
@@ -32,9 +35,13 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatCardModule } from '@angular/material/card';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatExpansionModule } from '@angular/material/expansion';
+
 import { AuthService } from './auth/auth.service';
 import { AuthGuard } from './auth/auth.guard';
-import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { EditRoleComponent } from './admin/role/edit-role/edit-role.component';
 import { CellListComponent } from './admin/cells/cell-list/cell-list.component';
 import { AddCellsComponent } from './admin/cells/add-cells/add-cells.component';
@@ -44,15 +51,16 @@ import { StepperImportComponent } from './sheet/stepper-import/stepper-import.co
 import { OpDashboardComponent } from './Operator/op-dashboard/op-dashboard.component';
 import { NavbarComponent } from './Operator/navbar/navbar.component';
 import { OperatorLayoutComponent } from './layout/operator-layout.component';
-import { RouterModule } from '@angular/router';
 import { OpSheetComponent } from './Operator/op-sheet/op-sheet.component';
-import { ResizeColumnDirective } from './Operator/op-sheet/resize-column.directive';
-import { DatePipe } from '@angular/common';
 import { SvHeaderComponent } from './supervisor/sv-header/sv-header.component';
 import { SvViewtableComponent } from './supervisor/sv-viewtable/sv-viewtable.component';
 import { SupervisorLayoutComponent } from './layout/supervisor-layout.component';
 import { SvReviewtableComponent } from './supervisor/sv-reviewtable/sv-reviewtable.component';
 import { SvReportComponent } from './supervisor/sv-report/sv-report.component';
+
+import { ResizeColumnDirective } from './Operator/op-sheet/resize-column.directive';
+import { ChecklistsComponent } from './Operator/checklists/checklists.component';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -79,6 +87,7 @@ import { SvReportComponent } from './supervisor/sv-report/sv-report.component';
     SupervisorLayoutComponent,
     SvReviewtableComponent,
     SvReportComponent,
+    ChecklistsComponent,
   ],
   imports: [
     BrowserModule,
@@ -109,6 +118,9 @@ import { SvReportComponent } from './supervisor/sv-report/sv-report.component';
     MatSnackBarModule,
     MatGridListModule,
     MatCardModule,
+    MatExpansionModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
   ],
   providers: [AuthService, AuthGuard, DatePipe],
   bootstrap: [AppComponent],

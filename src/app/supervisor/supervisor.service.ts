@@ -10,6 +10,7 @@ export class SupervisorService {
   constructor(private http: HttpClient, public router: Router) {}
   private activity: any = [];
   private activitiesUpdated = new Subject<any[]>();
+  public currentUser;
 
   getactivities() {
     console.log('Get activities called!');

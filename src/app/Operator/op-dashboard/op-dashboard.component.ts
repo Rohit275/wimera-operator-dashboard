@@ -1,14 +1,8 @@
+import { DatePipe } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import {
-  ActivatedRoute,
-  NavigationEnd,
-  ParamMap,
-  Router,
-  RouterEvent,
-} from '@angular/router';
-import { parse } from 'querystring';
+import { MatTableDataSource } from '@angular/material/table';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
 import { OperatorService } from '../operator.service';
 
 export interface PeriodicElement {
@@ -24,52 +18,42 @@ export interface PeriodicElement {
   styleUrls: ['./op-dashboard.component.css'],
 })
 export class OpDashboardComponent implements OnInit, OnDestroy {
-  getroles: any = [];
-  roles: any = [];
-  cells: any = [];
-  currentBay;
-  currentCell;
-  bays = [];
-  ischecklist: boolean = false;
-  checkLists = [];
-  cellvals = [];
-  cardvals = [];
+  public bays = [];
+  public cells = [];
+  public cellValues = [];
+  public checklists = [];
+  public activities = [];
+
+  public userName;
+  public getroles;
+  private userId;
+  sample = new Array();
+
   roleSub;
   opId: any;
-  userName: any;
-  isNavigate: boolean = false;
-  constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-    private opservice: OperatorService
-  ) {}
-  gridvals: string[] = [
-    'position',
-    'name',
-    'weight',
-    'symbol',
-    'symbol2',
-    'symbol3',
-    'symbol4',
-    'symbol5',
+  roles: any;
+  data: any = [];
+  dataSource: any = [];
+  displayedColumns: string[] = [
+    'SNo',
+    'username',
+    'Bay',
+    'CellName',
+    'ChecklistName',
+    'UpdatedTime',
+    'status',
   ];
-  id;
-  filter$: Observable<string>;
+
+  constructor(private opService: OperatorService, private datePipe: DatePipe) {}
 
   ngOnInit(): void {
-    this.isNavigate = false;
-    console.log('Navigate :', this.isNavigate);
-    this.userName = this.route.snapshot.paramMap.get('uname');
-    console.log('Username from route: ', this.userName);
-    this.opservice.getRoles(this.userName);
-    this.roleSub = this.opservice.getRoleUpdateListener().subscribe((roles) => {
+    this.userName = this.opService.currentUsername;
+
+    this.opService.getRoles(this.userName);
+    this.roleSub = this.opService.getRoleUpdateListener().subscribe((roles) => {
       this.getroles = roles;
-      console.log('Roles :', this.getroles);
-      // this.getroles.map((x) => {
-      //   this.roles.push(x.cell);
-      // });
-      this.opId = this.getroles._id;
       this.roles = this.getroles.cell;
+      this.userId = this.getroles._id;
       console.log('Cells :', this.roles);
       this.roles.forEach((x) => {
         this.cells.push({
@@ -79,62 +63,66 @@ export class OpDashboardComponent implements OnInit, OnDestroy {
           checklistName: x.checklistName,
         });
       });
-      this.cells.forEach((x) => {
+
+      this.cells.forEach((x, index) => {
         this.bays.push(x.Bay);
       });
+
       this.bays = [...new Set(this.bays)];
-      console.log('Bay :', this.bays);
+
+      var arr = [];
+      this.bays.forEach((y, index) => {
+        arr = [];
+        this.cells.forEach((x, index) => {
+          if (y == x.Bay && !arr.includes(x.cellName)) {
+            arr.push(x.cellName);
+          }
+        });
+        this.sample[y] = arr;
+      });
+      console.log('User id:', this.userId);
+      this.opService.getUserRecents(this.userId);
+    });
+
+    this.opService.getRecentsUpdateListener().subscribe((data) => {
+      this.activities = [];
+      this.data = data;
+      var updateddate;
+      this.data.forEach((x) => {
+        updateddate = this.datePipe.transform(
+          x.lastUpdated,
+          'MMM d, y, h:mm a'
+        );
+        console.log('Updated data :', updateddate);
+        this.activities.push({
+          id: x._id,
+          username: x.User[0].userName,
+          Bay: x.Sheet[0].cell[0].Bay,
+          CellName: x.Sheet[0].cell[0].cellName,
+          ChecklistName: x.Sheet[0].cell[0].checklistName,
+          UpdatedTime: updateddate,
+          value: x.Sheet[0].value,
+          status: x.status,
+        });
+      });
+      //console.log('Before Actvity push :', this.activities);
+
+      console.log('Activities :', this.activities);
+      this.dataSource = new MatTableDataSource<any>(this.activities);
     });
   }
 
-  onclickDiv(val) {
-    console.log(val);
-    this.cardvals.push({
-      id: val.id,
-      Bay: this.currentBay,
-      cellName: this.currentCell,
-      checklistName: val.checklist,
-    });
-    console.log('Card Values :', this.cardvals);
-    this.opservice.putcardvalues(this.cardvals, this.opId);
-    this.isNavigate = true;
-    this.checkLists = [];
-    this.ischecklist = false;
-    this.router.navigate(['./sheet'], { relativeTo: this.route });
-  }
-
-  onSelectBay(event) {
-    this.cellvals = [];
-    var bay = event.value;
-    this.currentBay = bay;
-    this.cells.forEach((x) => {
-      if (bay == x.Bay) {
-        this.cellvals.push(x.cellName);
+  openExpansion(cell, bay) {
+    console.log('openExpansion: ', cell, bay);
+    this.checklists = [];
+    this.cells.forEach((element) => {
+      if (element.cellName == cell && element.Bay == bay) {
+        this.checklists.push(element.checklistName);
       }
     });
-    this.cellvals = [...new Set(this.cellvals)];
-    console.log('CellName :', this.cellvals);
   }
 
-  onSelectCell(event) {
-    //this.checkLists = [];
-    var cell = event.value;
-    this.currentCell = cell;
-  }
+  panelOpenState = false;
 
-  onChoose() {
-    this.checkLists = [];
-    this.ischecklist = true;
-    this.cells.forEach((x) => {
-      if (this.currentBay == x.Bay && this.currentCell == x.cellName) {
-        this.checkLists.push({ id: x.id, checklist: x.checklistName });
-      }
-    });
-    console.log('Checklists :', this.checkLists);
-  }
-
-  ngOnDestroy() {
-    console.log('Ng ondestroy!');
-    this.roleSub.unsubscribe();
-  }
+  ngOnDestroy(): void {}
 }

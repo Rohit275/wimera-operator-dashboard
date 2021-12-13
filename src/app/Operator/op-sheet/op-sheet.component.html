@@ -60,7 +60,6 @@
         <tr mat-row *matRowDef="let row; columns: dynamicDisplayedColumns"></tr>
       </table>
     </div>
-    <mat-paginator #paginator [pageSizeOptions]="[10, 20, 30]"> </mat-paginator>
   </div>
   <button mat-raised-button color="primary" (click)="onBack()">Back</button>
   <button mat-raised-button color="primary" (click)="onUpdate()">Update</button>

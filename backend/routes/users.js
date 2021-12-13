@@ -1,11 +1,108 @@
 const express = require("express");
-const mongoose = require("mongoose");
+const router = express.Router();
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+
 const User = require("../models/users");
 const Cell = require("../models/Cells");
 const SuperUser = require("../models/superuser");
-const activity = require("../models/activity");
-const router = express.Router();
-let uname;
+const Activity = require("../models/activity");
+const { result } = require("underscore");
+var uname;
+
+// Login
+router.post("/login", (req, res, next) => {
+  let model;
+  if (req.body.role == "Admin" || req.body.role == "Supervisor") {
+    model = SuperUser;
+  } else {
+    model = User;
+  }
+
+  let currentUser;
+
+  model
+    .findOne({
+      userName: req.body.userName,
+    })
+    .then((user) => {
+      console.log("inside login 1st then");
+      console.log("inside login 1st then user:", user);
+      if (!user) {
+        console.log("User not found");
+        return res.status(401).json(null);
+      }
+      uname = user.userName;
+      currentUser = user;
+      // return res.status(200).json(user);
+      return bcrypt.compare(req.body.password, user.Password);
+    })
+    .then((result) => {
+      console.log("inside login 2nd then");
+
+      console.log("bcrypt result: ", result);
+      if (!result) {
+        return res.status(401).json(null);
+      }
+      // const token = jwt.sign(
+      //   { uname: currentUser.userName, id: currentUser._id },
+      //   "secret_this_should_be_longer"
+      // );
+      res.status(200).json(currentUser);
+    })
+    .catch((err) => {
+      console.log("inside login catch");
+
+      return res.status(401).json({ error: err });
+    });
+});
+
+//Add roles
+router.post("/addrole", (req, res, next) => {
+  bcrypt.hash(req.body.data.Password, 10).then((hash) => {
+    const data = new User({
+      RoleName: req.body.data.RoleName,
+      userName: req.body.data.userName,
+      Password: hash,
+      cell: req.body.cell,
+    });
+    console.log("Req.body :", data);
+    data
+      .save()
+      .then((addedValue) => {
+        console.log(addedValue);
+        return res.status(201).json({
+          message: "Role added succesfully!",
+        });
+      })
+      .catch((err) => {
+        res.status(500).json(null);
+      });
+  });
+});
+
+//Add superuser
+router.post("/addsuperuser", (req, res, next) => {
+  bcrypt.hash(req.body.data.password, 10).then((hash) => {
+    let data = new SuperUser({
+      RoleName: req.body.data.roleName,
+      userName: req.body.data.username,
+      Password: hash,
+    });
+    console.log(data);
+    data
+      .save()
+      .then((addedValue) => {
+        console.log(addedValue);
+        res.status(201).json({
+          message: "User added succesfully!",
+        });
+      })
+      .catch((err) => {
+        res.status(500).json({ error: err });
+      });
+  });
+});
 
 router.get("/getroles", (req, res, next) => {
   User.find()
@@ -40,13 +137,20 @@ router.get("/getcells", (req, res, next) => {
   });
 });
 
-router.get("/getactivity", (req, res, next) => {
-  activity.find().then((documents) => {
-    res.status(200).json({
-      message: "Activities fetched successfully!",
-      cells: documents,
+router.post("/getrecents", (req, res, next) => {
+  console.log("getrecents id: ", req.body.id);
+
+  Activity.find({ User: req.body.id })
+    .populate("User")
+    .populate({
+      path: "Sheet",
+      populate: {
+        path: "cell", // in blogs, populate comments
+      },
+    })
+    .then((documents) => {
+      res.status(200).json(documents);
     });
-  });
 });
 
 router.post("/getcell", (req, res, next) => {
@@ -80,22 +184,6 @@ router.get("/getcell/:id", (req, res, next) => {
   });
 });
 
-router.post("/addrole", (req, res, next) => {
-  let data = new User({
-    RoleName: req.body.data.RoleName,
-    userName: req.body.data.userName,
-    Password: req.body.data.Password,
-    cell: req.body.cell,
-  });
-  console.log("Req.body :", data);
-  data.save().then((addedValue) => {
-    console.log(addedValue);
-    res.status(201).json({
-      message: "Role added succesfully!",
-    });
-  });
-});
-
 router.post("/addcell", (req, res, next) => {
   let data = new Cell(req.body);
   console.log(data);
@@ -125,44 +213,22 @@ router.post("/getcellid", (req, res, next) => {
   });
 });
 
-router.post("/login", (req, res, next) => {
-  let model;
-  if (req.body.role == "Admin" || req.body.role == "Supervisor") {
-    model = SuperUser;
-  } else {
-    model = User;
-  }
-
-  model
-    .findOne({
-      RoleName: req.body.role,
-      userName: req.body.userName,
-      Password: req.body.password,
+router.get("/g", (req, res, next) => {
+  activity
+    .find()
+    .populate("User")
+    .populate({
+      path: "Sheet",
+      populate: {
+        path: "cell", // in blogs, populate comments
+      },
     })
-    .then((user) => {
-      if (!user) {
-        //console.log(user);
-        return res.json(null);
-      } else {
-        uname = user.userName;
-        res.status(200).json(user);
-      }
+    .then((documents) => {
+      res.status(200).json({
+        message: "Activities fetched successfully!",
+        activities: documents,
+      });
     });
-});
-
-router.post("/addsuperuser", (req, res, next) => {
-  let data = new SuperUser({
-    RoleName: req.body.data.roleName,
-    userName: req.body.data.username,
-    Password: req.body.data.password,
-  });
-  console.log(data);
-  data.save().then((addedValue) => {
-    console.log(addedValue);
-    res.status(201).json({
-      message: "User added succesfully!",
-    });
-  });
 });
 
 router.put("/:id", (req, res, next) => {

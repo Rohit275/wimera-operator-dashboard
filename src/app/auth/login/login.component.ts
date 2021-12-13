@@ -10,6 +10,7 @@ import { AuthService } from '../auth.service';
   styleUrls: ['./login.component.css'],
 })
 export class LoginComponent implements OnInit {
+  public hide: boolean = true;
   constructor(
     private router: Router,
     private _snackbar: MatSnackBar,

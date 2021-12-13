@@ -1,8 +1,8 @@
 const mongoose = require("mongoose");
-// const uniqueValidator = require("mongoose-unique-validator");
+const uniqueValidator = require("mongoose-unique-validator");
 
 const User = mongoose.Schema({
-  userName: { type: String, required: true },
+  userName: { type: String, required: true, unique: true },
   RoleName: { type: String, required: true },
   Password: { type: String, required: true },
   cell: [
@@ -12,5 +12,7 @@ const User = mongoose.Schema({
     },
   ],
 });
+
+User.plugin(uniqueValidator);
 
 module.exports = mongoose.model("User", User);

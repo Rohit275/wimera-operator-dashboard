@@ -1,54 +1,51 @@
 table {
   width: 100%;
+  max-height: 300px;
 }
 
-body {
-  background-color: #fff;
-  color: black;
-}
-.grid {
-  max-width: 1200px;
-  margin: auto;
-  color: #fff;
+.example-card {
+  max-width: 400px;
 }
 
-.grid h2 {
-  padding-top: 50px;
-  padding-bottom: 50px;
-  width: 600px;
-  margin: auto;
-  font-size: 26px;
-  color: black;
-  text-align: center;
-}
-
-.grid-cards-inner h1 {
-  font-size: 25px;
-  text-align: center;
-}
-
-.header-section {
-  max-width: 1200px;
-  margin: auto;
-}
-
-.grid-cards {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 40px;
-  cursor: pointer;
-}
-
-.grid-cards div {
-  background-color: #453381;
-  padding: 20px;
-  border-radius: 5px;
-}
-
-.opvalues {
+.card-container {
   display: flex;
   flex-direction: row;
-  gap: 30px;
-  justify-content: center;
-  padding-top: 50px;
+  margin-bottom: 30px;
+}
+
+mat-card {
+  background-color: #4262c2;
+  color: white;
+  margin: 10px;
+}
+
+/* mat-expansion-panel {
+  background-color: #3855ad;
+  color: white;
+} */
+mat-expansion-panel-header {
+  width: 300px;
+}
+
+.mat-header-cell {
+  font-size: 1rem;
+  font-weight: bold;
+  text-transform: capitalize;
+}
+
+.mat-table {
+  overflow: auto;
+  max-height: 650px;
+  width: 100%;
+}
+
+.mat-table .mat-cell,
+.mat-table .mat-header-cell {
+  border-right: 1px solid rgba(0, 0, 0, 0.12);
+  margin-left: 10px;
+}
+
+.mat-table .mat-cell:not(:nth-child(1)),
+.mat-table .mat-header-cell:not(:nth-child(1)) {
+  padding: 0 10px;
 }

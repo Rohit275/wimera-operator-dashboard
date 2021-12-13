@@ -209,11 +209,12 @@ export class StepperImportComponent implements OnInit {
       //console.log(filteredData);
       console.log('OpNO: ');
       this.adminService.putImportValues(this.opNo, filteredData);
-      // this._snackbar.open('New file imported!', '', {
-      //   horizontalPosition: 'center',
-      //   verticalPosition: 'top',
-      //   duration: 5000,
-      // });
+      this._snackbar.open('New file imported!', '', {
+        horizontalPosition: 'center',
+        verticalPosition: 'top',
+        duration: 5000,
+      });
+      this.onClose();
     }
   }
 

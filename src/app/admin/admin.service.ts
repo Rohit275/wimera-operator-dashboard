@@ -125,9 +125,14 @@ export class AdminService {
         this.config
       )
       .subscribe((respData) => {
-        console.log(respData);
+        if (!respData) {
+          console.log('Already exists');
+          return;
+        }
+        console.log('store role: ', respData);
         console.log('Role Added Successfully');
         this.usersUpdated.next([...this.users]);
+        return;
       });
   }
 

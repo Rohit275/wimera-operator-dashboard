@@ -17,6 +17,8 @@ import { OpSheetComponent } from './Operator/op-sheet/op-sheet.component';
 import { SupervisorLayoutComponent } from './layout/supervisor-layout.component';
 import { SvViewtableComponent } from './supervisor/sv-viewtable/sv-viewtable.component';
 import { SvReportComponent } from './supervisor/sv-report/sv-report.component';
+import { SvHeaderComponent } from './supervisor/sv-header/sv-header.component';
+import { ChecklistsComponent } from './Operator/checklists/checklists.component';
 
 const routes: Routes = [
   {
@@ -44,25 +46,27 @@ const routes: Routes = [
     component: OperatorLayoutComponent,
     canActivate: [AuthGuard],
     children: [
+      { path: '', component: OpDashboardComponent },
       {
         path: 'operator/:uname',
-        component: OpDashboardComponent,
+        component: NavbarComponent,
         children: [
-          {
-            path: 'sheet',
-            component: OpSheetComponent,
-          },
           {
             path: 'dashboard',
             component: OpDashboardComponent,
           },
+          {
+            path: 'checklist',
+            component: ChecklistsComponent,
+            children: [
+              {
+                path: ':sheetname',
+                component: OpSheetComponent,
+              },
+            ],
+          },
         ],
       },
-      // {
-      //   path: 'operator/sheet',
-      //   component: OpSheetComponent,
-      // },
-      { path: '', component: NavbarComponent },
     ],
   },
   {
@@ -70,9 +74,10 @@ const routes: Routes = [
     component: SupervisorLayoutComponent,
     canActivate: [AuthGuard],
     children: [
+      { path: '', component: SvViewtableComponent },
       {
         path: 'supervisor/:uname',
-        component: SvViewtableComponent,
+        component: SvHeaderComponent,
         children: [
           {
             path: 'manage',

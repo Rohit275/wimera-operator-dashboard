@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, Subject } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class OperatorService {
@@ -13,8 +14,12 @@ export class OperatorService {
   opId: any;
   sheets: any = [];
   currentcardvals = [];
+
+  private recents: any = [];
+  public currentUsername;
   private rolesUpdated = new Subject<any[]>();
   private sheetsUpdated = new Subject<any[]>();
+  private recentUpdated = new Subject<any[]>();
 
   constructor(private http: HttpClient) {}
   ngInit() {}
@@ -25,6 +30,10 @@ export class OperatorService {
 
   getSheetsUpdateListener() {
     return this.sheetsUpdated.asObservable();
+  }
+
+  getRecentsUpdateListener() {
+    return this.recentUpdated.asObservable();
   }
 
   getRoles(username) {
@@ -40,6 +49,27 @@ export class OperatorService {
         this.roles = respData;
         this.rolesUpdated.next(this.roles);
         console.log('Roles Fetched Successfully');
+      });
+  }
+
+  getUserRecents(userid) {
+    console.log(userid);
+    this.http
+      .post<{ message: string }>('http://localhost:3000/api/users/getrecents', {
+        id: userid,
+      })
+      .pipe(
+        map((data) => {
+          console.log('Activity: ', data);
+          console.log('Data: ', data);
+          return data;
+        })
+      )
+      .subscribe((respData) => {
+        console.log('getUserRecents: ', respData);
+        this.recents = respData;
+        this.recentUpdated.next([...this.recents]);
+        console.log('Recents fetched successfully');
       });
   }
 

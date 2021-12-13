@@ -20,6 +20,7 @@ import { AdminService } from '../../admin.service';
 })
 export class AddRoleComponent implements OnInit {
   @ViewChildren('checklistCB') checkboxes: QueryList<ElementRef>;
+
   cellData = [];
   checkedArray: boolean[];
   checked: string;
@@ -37,6 +38,8 @@ export class AddRoleComponent implements OnInit {
   selectedCells = [];
   bay: any = [];
   isBaySelected: boolean = false;
+  hide: boolean = true;
+
   constructor(
     public dialogRef: MatDialogRef<AddRoleComponent>,
     private _snackbar: MatSnackBar,
