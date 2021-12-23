@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { DatePipe } from '@angular/common';
 
@@ -14,31 +14,6 @@ import { RoleListComponent } from './admin/role/role-list/role-list.component';
 import { LoginComponent } from './auth/login/login.component';
 import { HomeLayoutComponent } from './layout/home-layout.component';
 import { LoginLayoutComponent } from './layout/login-layout.component';
-
-import { MatMenuModule } from '@angular/material/menu';
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { MatDividerModule } from '@angular/material/divider';
-import { MatTableModule } from '@angular/material/table';
-import { MatPaginatorModule } from '@angular/material/paginator';
-import { MatDialogModule } from '@angular/material/dialog';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatSelectModule } from '@angular/material/select';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatRadioModule } from '@angular/material/radio';
-import { MatTabsModule } from '@angular/material/tabs';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { MatGridListModule } from '@angular/material/grid-list';
-import { MatStepperModule } from '@angular/material/stepper';
-import { MatCardModule } from '@angular/material/card';
-import { MatButtonToggleModule } from '@angular/material/button-toggle';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatNativeDateModule } from '@angular/material/core';
-import { MatExpansionModule } from '@angular/material/expansion';
 
 import { AuthService } from './auth/auth.service';
 import { AuthGuard } from './auth/auth.guard';
@@ -58,8 +33,9 @@ import { SupervisorLayoutComponent } from './layout/supervisor-layout.component'
 import { SvReviewtableComponent } from './supervisor/sv-reviewtable/sv-reviewtable.component';
 import { SvReportComponent } from './supervisor/sv-report/sv-report.component';
 
-import { ResizeColumnDirective } from './Operator/op-sheet/resize-column.directive';
 import { ChecklistsComponent } from './Operator/checklists/checklists.component';
+import { AngularMaterialModule } from './angular-material.module';
+import { ErrorInterceptor } from './helpers/error-interceptor';
 
 @NgModule({
   declarations: [
@@ -81,7 +57,6 @@ import { ChecklistsComponent } from './Operator/checklists/checklists.component'
     NavbarComponent,
     OperatorLayoutComponent,
     OpSheetComponent,
-    ResizeColumnDirective,
     SvHeaderComponent,
     SvViewtableComponent,
     SupervisorLayoutComponent,
@@ -94,35 +69,16 @@ import { ChecklistsComponent } from './Operator/checklists/checklists.component'
     AppRoutingModule,
     BrowserAnimationsModule,
     FormsModule,
-    MatButtonToggleModule,
     ReactiveFormsModule,
     HttpClientModule,
-    MatToolbarModule,
-    MatSidenavModule,
-    MatButtonModule,
-    MatIconModule,
-    MatDividerModule,
-    MatTableModule,
-    MatPaginatorModule,
-    MatDialogModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatStepperModule,
-    MatMenuModule,
-    MatSelectModule,
-    MatButtonToggleModule,
-    MatProgressSpinnerModule,
-    MatCheckboxModule,
-    MatRadioModule,
-    MatTabsModule,
-    MatSnackBarModule,
-    MatGridListModule,
-    MatCardModule,
-    MatExpansionModule,
-    MatDatepickerModule,
-    MatNativeDateModule,
+    AngularMaterialModule,
   ],
-  providers: [AuthService, AuthGuard, DatePipe],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+    AuthService,
+    AuthGuard,
+    DatePipe,
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

@@ -25,9 +25,8 @@ export class AuthService {
 
   login(user) {
     console.log('User in Login', user);
-    this.http
-      .post('http://localhost:3000/api/users/login', user)
-      .subscribe((resp) => {
+    this.http.post('http://localhost:3000/api/users/login', user).subscribe(
+      (resp) => {
         console.log('Auth service: ', resp);
         this.Userid = resp;
         console.log('User Id :', this.Userid);
@@ -52,7 +51,11 @@ export class AuthService {
           this.loggedIn.next(true);
           this.router.navigate(['/supervisor/', username, 'manage']);
         }
-      });
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
   }
 
   logout() {

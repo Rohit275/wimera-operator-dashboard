@@ -168,12 +168,14 @@ export class AddRoleComponent implements OnInit {
       return;
     }
     this.adminService.addSupervisor(form.value);
-    this._snackbar.open('New value added!', '', {
-      horizontalPosition: 'center',
-      verticalPosition: 'top',
-      duration: this.durationInSeconds * 1000,
-    });
-    this.onCancel(form);
+    if (this.adminService.isAvailable) {
+      this._snackbar.open('New value added!', '', {
+        horizontalPosition: 'center',
+        verticalPosition: 'top',
+        duration: this.durationInSeconds * 1000,
+      });
+      this.onCancel(form);
+    }
   }
 
   oncreateRole(form: NgForm) {
@@ -183,14 +185,16 @@ export class AddRoleComponent implements OnInit {
     }
     this.isLoading = true;
     this.adminService.addUser(form.value, this.allotedVals);
-    setTimeout(() => {
-      this.adminService.getUsers();
-    }, 1000);
-    this._snackbar.open('New value added!', '', {
-      horizontalPosition: 'center',
-      verticalPosition: 'top',
-      duration: this.durationInSeconds * 1000,
-    });
-    this.onCancel(form);
+    if (this.adminService.isAvailable) {
+      setTimeout(() => {
+        this.adminService.getUsers();
+      }, 1000);
+      this._snackbar.open('New value added!', '', {
+        horizontalPosition: 'center',
+        verticalPosition: 'top',
+        duration: this.durationInSeconds * 1000,
+      });
+      this.onCancel(form);
+    }
   }
 }

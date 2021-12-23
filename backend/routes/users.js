@@ -30,7 +30,7 @@ router.post("/login", (req, res, next) => {
       console.log("inside login 1st then user:", user);
       if (!user) {
         console.log("User not found");
-        return res.status(401).json(null);
+        return res.status(401).json({ message: "User not found" });
       }
       uname = user.userName;
       currentUser = user;
@@ -38,11 +38,11 @@ router.post("/login", (req, res, next) => {
       return bcrypt.compare(req.body.password, user.Password);
     })
     .then((result) => {
-      console.log("inside login 2nd then");
+      // console.log("inside login 2nd then");
 
       console.log("bcrypt result: ", result);
       if (!result) {
-        return res.status(401).json(null);
+        return res.status(401).json({ message: "Wrong credentials" });
       }
       // const token = jwt.sign(
       //   { uname: currentUser.userName, id: currentUser._id },
@@ -51,7 +51,7 @@ router.post("/login", (req, res, next) => {
       res.status(200).json(currentUser);
     })
     .catch((err) => {
-      console.log("inside login catch");
+      console.log("inside login catch ", err);
 
       return res.status(401).json({ error: err });
     });
@@ -76,7 +76,7 @@ router.post("/addrole", (req, res, next) => {
         });
       })
       .catch((err) => {
-        res.status(500).json(null);
+        res.status(500).json({ message: "Username must be unique" });
       });
   });
 });

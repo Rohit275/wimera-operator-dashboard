@@ -16,6 +16,8 @@ export class AdminService {
   private cells: any = [];
   private roles: any = [];
   public popcellId: any = [];
+  public isAvailable: boolean = false;
+
   private rolesUpdated = new Subject<any[]>();
   private editId;
   public cellValue: any;
@@ -115,6 +117,7 @@ export class AdminService {
   }
 
   storeRole(data, cell) {
+    this.isAvailable = false;
     this.http
       .post<{ message: string }>(
         'http://localhost:3000/api/users/addrole',
@@ -129,14 +132,17 @@ export class AdminService {
           console.log('Already exists');
           return;
         }
-        console.log('store role: ', respData);
-        console.log('Role Added Successfully');
+        // console.log('store role: ', respData);
+        // console.log('Role Added Successfully');
+        this.isAvailable = true;
         this.usersUpdated.next([...this.users]);
         return;
       });
   }
 
   addSupervisor(data) {
+    this.isAvailable = false;
+
     this.http
       .post<{ message: string }>(
         'http://localhost:3000/api/users/addsuperuser',
@@ -146,8 +152,10 @@ export class AdminService {
         this.config
       )
       .subscribe((respData) => {
-        console.log(respData);
-        console.log('Supervisor Added Successfully');
+        // console.log(respData);
+        // console.log('Supervisor Added Successfully');
+        this.isAvailable = true;
+
         this.usersUpdated.next([...this.users]);
       });
   }
