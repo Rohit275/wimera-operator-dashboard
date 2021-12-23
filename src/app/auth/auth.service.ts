@@ -25,37 +25,37 @@ export class AuthService {
 
   login(user) {
     console.log('User in Login', user);
-    this.http.post('http://localhost:3000/api/users/login', user).subscribe(
-      (resp) => {
-        console.log('Auth service: ', resp);
-        this.Userid = resp;
-        console.log('User Id :', this.Userid);
-        if (!this.Userid) {
-          this._snackbar.open('Wrong credentials. Login Denied!', '', {
-            horizontalPosition: 'center',
-            verticalPosition: 'top',
-            duration: this.durationInSeconds * 1000,
-          });
-          return;
-        }
-        console.log(this.Userid);
-        var role = this.Userid.RoleName;
-        var username = this.Userid.userName;
-        if (role == 'Admin') {
+    if (user.role == 'Admin') {
+      this.http
+        .post('http://localhost:3000/api/users/adminLogin', user)
+        .subscribe((resp) => {
           this.loggedIn.next(true);
           this.router.navigate(['/admin/dashboard']);
-        } else if (role == 'Operator') {
-          this.loggedIn.next(true);
-          this.router.navigate(['/operator/', username, 'dashboard']);
-        } else if (role == 'Supervisor') {
-          this.loggedIn.next(true);
-          this.router.navigate(['/supervisor/', username, 'manage']);
+        });
+    } else {
+      this.http.post('http://localhost:3000/api/users/login', user).subscribe(
+        (resp) => {
+          console.log('Auth service: ', resp);
+          this.Userid = resp;
+          // console.log('User Id :', this.Userid);
+
+          console.log(this.Userid);
+          var role = this.Userid.RoleName;
+          var username = this.Userid.userName;
+
+          if (role == 'Operator') {
+            this.loggedIn.next(true);
+            this.router.navigate(['/operator/', username, 'dashboard']);
+          } else if (role == 'Supervisor') {
+            this.loggedIn.next(true);
+            this.router.navigate(['/supervisor/', username, 'manage']);
+          }
+        },
+        (err) => {
+          console.log(err);
         }
-      },
-      (err) => {
-        console.log(err);
-      }
-    );
+      );
+    }
   }
 
   logout() {

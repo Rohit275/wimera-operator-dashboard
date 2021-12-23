@@ -11,9 +11,43 @@ const { result } = require("underscore");
 var uname;
 
 // Login
+
+router.post("/adminLogin", (req, res, next) => {
+  let currentUser;
+  SuperUser.findOne({ RoleName: req.body.role })
+    .then((user) => {
+      if (!user) {
+        bcrypt.hash(req.body.password, 10).then((hash) => {
+          const data = new SuperUser({
+            RoleName: req.body.role,
+            userName: req.body.userName,
+            Password: hash,
+          });
+          data.save();
+        });
+        return res.status(200).json(result);
+      }
+      currentUser = user;
+      if (req.body.userName == user.userName) {
+        return bcrypt.compare(req.body.password, user.Password);
+      }
+      return;
+    })
+    .then((result) => {
+      if (!result) {
+        return res.status(401).json({ message: "Wrong credentials" });
+      }
+
+      res.status(200).json(currentUser);
+    })
+    .catch((err) => {
+      return res.status(401).json({ error: err });
+    });
+});
+
 router.post("/login", (req, res, next) => {
   let model;
-  if (req.body.role == "Admin" || req.body.role == "Supervisor") {
+  if (req.body.role == "Supervisor") {
     model = SuperUser;
   } else {
     model = User;
@@ -26,21 +60,15 @@ router.post("/login", (req, res, next) => {
       userName: req.body.userName,
     })
     .then((user) => {
-      console.log("inside login 1st then");
-      console.log("inside login 1st then user:", user);
       if (!user) {
         console.log("User not found");
         return res.status(401).json({ message: "User not found" });
       }
       uname = user.userName;
       currentUser = user;
-      // return res.status(200).json(user);
       return bcrypt.compare(req.body.password, user.Password);
     })
     .then((result) => {
-      // console.log("inside login 2nd then");
-
-      console.log("bcrypt result: ", result);
       if (!result) {
         return res.status(401).json({ message: "Wrong credentials" });
       }
@@ -48,6 +76,7 @@ router.post("/login", (req, res, next) => {
       //   { uname: currentUser.userName, id: currentUser._id },
       //   "secret_this_should_be_longer"
       // );
+
       res.status(200).json(currentUser);
     })
     .catch((err) => {
